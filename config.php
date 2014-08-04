@@ -11,8 +11,7 @@ namespace LaneWeChat;
  */
 
 //微信公众平台相关
-define('TOKEN', 'weixin');
-define("WECHAT_ACCESS_TOKEN_TIME", 7200);
+define('WECHAT_TOKEN', 'weixin');
 define("WECHAT_APPID", 'wxe864803f7865d939');
 define("WECHAT_APPSECRET", '0c451f7c33881c22f067dc73847f0b67');
 define("WECHAT_URL", 'http://www.lanecn.com');
