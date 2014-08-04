@@ -89,6 +89,26 @@ class Wechat{
     public function run() {
         return WechatRequest::switchType($this->request);
     }
+
+    public function checkSignature()
+    {
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+
+        $token = WECHAT_TOKEN;
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            echo $_GET['echostr'];
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 
