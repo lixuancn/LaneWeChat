@@ -18,6 +18,23 @@ Developer Blog：http://www.lanecn.com
 
 
 
+文档目录：
+
+    1、常识普及。
+
+    2、如何安装。
+
+    3、初出茅庐。
+
+    4、流程分析。
+
+    5、牛刀小试。
+
+    6、函数详解。
+
+    7、实例示范。
+
+
 常识普及：
 
 一、微信公众账号分两种，一种是订阅号，一种是服务号。
@@ -51,7 +68,7 @@ Developer Blog：http://www.lanecn.com
 
     4、首次使用时，请打开根目录下的wechat.php，注释掉20行，21行，并且打开注释第24行。
 
-    5、在微信开发者-填写服务器配置页面，填写URL为http://*****/wechat.php，保证该URL可以通过80端口正常访问（微信服务器目前只支持80端口），并且将Token填写为config.php中的WECHAT_TOKEN常量的内容（可以修改）。
+    5、在微信开发者-填写服务器配置页面，填写URL为http://www.lanecn.com/wechat.php，保证该URL可以通过80端口正常访问（微信服务器目前只支持80端口），并且将Token填写为config.php中的WECHAT_TOKEN常量的内容（可以修改）。
 
     6、微信服务器在第4步验证通过后，反向操作第4步，即注释掉第24行，打开注释第20行，21行。至此，安装配置完成。
 
@@ -97,4 +114,220 @@ Developer Blog：http://www.lanecn.com
     3、在微信中打开你的公众号，输入文本消息“hello world”。见证奇迹的时刻到了。这个时候你的手机微信客户端中现实的是“收到文本消息hello world”。
 
 
-调用指南：
+
+
+函数详解：
+
+    一、被动给用户发送消息。
+
+        1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
+
+        2、使用命名空间：use LaneWeChat\Core\ResponsePassive;
+
+        3、参数：  $fromusername = "谁发给你的？（用户的openId）"  在变量$request['fromusername']中
+
+                 $tousername = "你的公众号Id";                 在变量$require['tousername']中
+
+                 $mediaId = "通过上传多媒体文件，得到的id。";
+
+        4、发送文本
+
+                ResponsePassive::text($fromusername, $tousername, '文本消息内容');
+
+        5、发送图片
+
+                ResponsePassive::image($fromusername, $tousername, $mediaId);
+
+        6、发送语音
+
+                ResponsePassive::voice($fromusername, $tousername, $mediaId);
+
+        7、发送视频
+
+                ResponsePassive::video($fromusername, $tousername, $mediaId, '视频标题', '视频描述');
+
+        8、发送音乐
+
+                ResponsePassive::music($fromusername, $tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+
+        9、发送图文
+
+            1）创建图文消息内容
+
+                $tuwenList = array();
+
+                $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
+
+                $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'图片URL2', 'url'=>'点击跳转URL2');
+
+            2）构建图文消息格式
+
+                $itemList = array();
+
+                foreach($tuwenList as $tuwen){
+
+                    $itemList[] = ResponsePassive::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
+
+                }
+
+            3）发送图文消息
+
+                ResponsePassive::news($fromusername, $tousername, $itemList);
+
+
+
+
+二、主动给用户发送消息。
+
+        1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
+
+        2、使用命名空间：use LaneWeChat\Core\ResponsePassive;
+
+        3、参数  $tousername = "你的公众号Id";                 在变量$require['tousername']中
+
+                $mediaId = "通过上传多媒体文件，得到的id。";
+
+        4、发送文本内容
+
+        ResponseInitiative::text($tousername, '文本消息内容');
+
+        5、发送图片
+
+        ResponseInitiative::image($tousername, $mediaId);
+
+        6、发送语音
+
+        ResponseInitiative::voice($tousername, $mediaId);
+
+        7、发送视频
+
+        ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
+
+        8、发送地理位置
+
+        ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+
+        9、发送图文消息
+
+            1）创建图文消息内容
+
+                $tuwenList = array();
+
+                $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
+
+                $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'图片URL2', 'url'=>'点击跳转URL2');
+
+            2）构建图文消息格式
+
+                $itemList = array();
+
+                foreach($tuwenList as $tuwen){
+
+                    $itemList[] = ResponseInitiative::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
+
+                }
+
+            3）发送图文消息
+
+                ResponseInitiative::news($tousername, $itemList);
+
+
+
+
+三、用户及用户组管理。
+
+        1、类简介：获取粉丝列表，创建\修改用户组，讲用户添加\移除到用户组。
+
+        2、使用命名空间：use LaneWeChat\Core\UserManage;
+
+        3、参数  $openId = '用户和微信公众号的唯一ID';           在变量$require['openid']中
+
+                $mediaId = "通过上传多媒体文件，得到的id。";
+
+                $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
+
+        4、分组管理 - 创建分组
+
+            UserManage::createGroup('分组名');
+
+        5、分组管理 - //获取分组列表
+
+            UserManage::getGroupList();
+
+        6、分组管理 - 查询用户所在分组
+
+            UserManage::getGroupByOpenId($openId);
+
+        7、分组管理 - 修改分组名
+
+            UserManage::editGroupName($groupId, '新的组名');
+
+        8、分组管理 - 移动用户分组
+
+            UserManage::editUserGroup($openId, $groupId);
+
+        9、用户管理 - 获取用户基本信息
+
+            UserManage::getUserInfo($openId);
+
+        10、用户管理 - 获取关注者列表
+
+            UserManage::getFansList($next_openId='');
+
+        11、用户管理 - 获取网络状态
+
+            UserManage::getNetworkState();
+
+
+
+
+四、网页授权。
+
+        1、类简介：在网页中获取来访用户的数据。
+
+        2、使用命名空间：use LaneWeChat\Core\WeChatOAuth;
+
+        3、参数  $openId = '用户和微信公众号的唯一ID';           在变量$require['openid']中
+
+                $mediaId = "通过上传多媒体文件，得到的id。";
+
+                $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
+
+        4、获取CODE。
+
+            参数：$scope：snsapi_base不弹出授权页面，只能获得OpenId;snsapi_userinfo弹出授权页面，可以获得所有信息
+
+            参数：$redirect_uri：将会跳转到redirect_uri/?code=CODE&state=STATE 通过GET方式获取code和state。获取CODE时，发送请求和参数给微信服务器，微信服务器会处理后将跳转到本参数指定的URL页面
+
+            WeChatOAuth::getCode($redirect_uri, $state=1, $scope='snsapi_base');
+
+        5、通过code换取网页授权access_token（access_token网页版）。首先请注意，这里通过code换取的网页授权access_token,与基础支持中的access_token不同。公众号可通过下述接口来获取网页授权access_token。如果网页授权的作用域为snsapi_base，则本步骤中获取到网页授权access_token的同时，也获取到了openid，snsapi_base式的网页授权流程即到此为止。
+
+            参数：$code getCode()获取的code参数。$code = $_GET['code'];
+
+            WeChatOAuth::getAccessTokenAndOpenId($code);
+
+
+
+
+实例示范：
+
+    1、通过网页授权获得用户信息
+
+        场景：用户点击了我的自定义菜单，或者我发送的文本消息中包含一个URL，用户打开了我的微信公众号的网页版，我需要获取用户的信息。
+
+        代码：
+
+        <?php
+            use LaneWeChat\Core\WeChatOAuth;
+            use LaneWeChat\Core\UserManage;
+
+            //第一步，获取CODE
+            WeChatOAuth::getCode('http://www.lanecn.com/index.php', 1, 'snsapi_base');
+            //此时页面跳转到了http://www.lanecn.com/index.php，code和state在GET参数中。
+            $code = $_GET['code'];
+            //第二步，获取access_token网页版
+            $openId = WeChatOAuth::getAccessTokenAndOpenId($code);
+            //第三步，获取用户信息
+            $userInfo = UserManage::getUserInfo($openId['openid']);
+        ?>
