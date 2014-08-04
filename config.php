@@ -5,10 +5,13 @@ namespace LaneWeChat;
  * @Created by Lane.
  * @Author: lane
  * @Mail lixuan868686@163.com
- * @Date: 14-1-10
- * @Time: 下午4:22
+ * @Date: 14-8-1
+ * @Time: 下午1:00
  * @Blog: Http://www.lanecn.com
  */
+//版本号
+define('LANEWECHAT_VERSION', '1.0');
+define('LANEWECHAT_VERSION_DATE', '2014-08-04');
 
 //微信公众平台相关
 define('WECHAT_TOKEN', 'weixin');
