@@ -39,7 +39,9 @@ class AccessToken{
         $accessTokenJson = json_encode($accessToken);
         //存入数据库
         /**
-         * 这里通常我会把access_token存起来，然后用的时候读取，判断是否过期，如果过期就重新调用此方法获取
+         * 这里通常我会把access_token存起来，然后用的时候读取，判断是否过期，如果过期就重新调用此方法获取，存取操作请自行完成
+         *
+         * 请将变量$accessTokenJson给存起来，这个变量是一个字符串
          */
 
         return $accessToken;

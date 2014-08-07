@@ -177,7 +177,44 @@ Developer Blog：http://www.lanecn.com
 
 
 
-二、主动给用户发送消息。
+二、AccessToken授权。
+
+    1、类简介：除了被动相应用户之外，在主动给用户发送消息，用户组管理等高级操作，是需要AccessToken授权的，我们调用一个URL给微信服务器，微信服务器会返回给我们一个散列字符串，在高级操作的时候需要将此串以参数的形式发送。散列字符串10分钟内有效，过期需要重新获取，获取新的后之前的全部失效。
+
+    2、使用命名空间：use LaneWeChat\Core\AccessToken;
+
+    3、参数：无
+
+    4、获取AccessToken
+
+        AccessToken::getAccessToken(); 该调用会返回微信服务器散列后的AccessToken字符串。
+
+    5、温馨提示
+
+        如果暂且用不到此功能，请跳过。最后来看这里！
+
+    6、功能补充
+
+        有一个地方需要用户自行完善，根据介绍我们已经知道了，获取AccessToken只有10分钟的有效期，过期需要重新获取。因此，我们需要存储这个AccessToken。
+
+        由于大家的存储方式各不相同，有Mysql的，有Redis的，有MongoDB的，还有Session的。所以这里我讲存储和读取给留空了。
+
+        流程：AccessToken类，public方法只有一个，就是getAccessToken()。这个方法会调用一个私有方法_checkAccessToken()来检测AccessToken是否存在并且是否过期，如果不存在或过期，则调用私有方法_getAccessToken()
+
+        完善步骤：
+
+        1）、打开core/accesstoken.lib.php文件。
+
+        2）、私有方法_getAccessToken()的倒数第二行（return是倒数第一行），在这个地方，请讲变量$accessTokenJson存储起来，变量$accessTokenJson是一个字符串。
+
+        3）、私有方法_checkAccessToken()的第一行就是读取操作（有一行伪代码$accessToken = YourDatabase::get('access_token');），将刚才第二步的存储的东西给读出来，并且赋值给$accessToken。
+
+        4）、在第二步的存储，第三部的读取的时候，请不要修改数据，仅仅完善一个读和存的操作就可以了。
+
+
+
+
+三、主动给用户发送消息。
 
         1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
 
@@ -234,7 +271,7 @@ Developer Blog：http://www.lanecn.com
 
 
 
-三、用户及用户组管理。
+四、用户及用户组管理。
 
         1、类简介：获取粉丝列表，创建\修改用户组，讲用户添加\移除到用户组。
 
@@ -281,7 +318,7 @@ Developer Blog：http://www.lanecn.com
 
 
 
-四、网页授权。
+五、网页授权。
 
         1、类简介：在网页中获取来访用户的数据。
 
