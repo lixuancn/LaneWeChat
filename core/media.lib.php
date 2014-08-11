@@ -23,7 +23,7 @@ class Media{
      * @param $type, 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
      * @return {"type":"TYPE","media_id":"MEDIA_ID","created_at":123456789}
      */
-    public function upload($filename, $type){
+    public static function upload($filename, $type){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token='.$accessToken.'&type='.$type;
@@ -46,7 +46,7 @@ class Media{
      * Content-Length: 339721
      * curl -G "http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID"
      */
-    public function download($mediaId){
+    public static function download($mediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$mediaId;
