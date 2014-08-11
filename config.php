@@ -44,4 +44,7 @@ include_once 'core/wechatoauth.lib.php';
 include_once 'core/usermanage.lib.php';
 //引入微信主动相应处理类
 include_once 'core/responseinitiative.lib.php';
+//引入多媒体管理类
+include_once 'core/media.lib.php';
+
 ?>

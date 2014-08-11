@@ -347,6 +347,41 @@ Developer Blog：http://www.lanecn.com
 
 
 
+六、多媒体上传下载
+
+        1、类简介：在网页中获取来访用户的数据。上传的多媒体文件有格式和大小限制，如下：
+
+            * 图片（image）: 1M，支持JPG格式
+
+            * 语音（voice）：2M，播放长度不超过60s，支持AMR\MP3格式
+
+            * 视频（video）：10MB，支持MP4格式
+
+            * 缩略图（thumb）：64KB，支持JPG格式
+
+            * 媒体文件在后台保存时间为3天，即3天后media_id失效
+
+        2、使用命名空间：use LaneWeChat\Core\Media;
+
+        3、参数  $filename 上传的文件的绝对路径
+
+                $type 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
+
+                $mediaId = "通过上传多媒体文件，得到的id。";
+
+                $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
+
+        4、上传：上传后，微信服务器会返回一个mediaId。
+
+            Media::upload($filename, $type);
+
+        5、下载：根据mediaId下载一个多媒体文件。
+
+            Media::download($mediaId);
+
+
+
+
 实例示范：
 
     1、通过网页授权获得用户信息
