@@ -115,3 +115,8 @@ WeChatOAuth::getAccessTokenAndOpenId($code);
  */
 $code = $_GET['code'];
 WeChatOAuth::getUserInfoBySnsapiBase($code, $redirect_uri='CODE不存在时需要传给getCode()的参数中的$redirect_uri');
+
+//上传多媒体
+Media::upload($filename, $type);
+//下载多媒体
+Media::download($mediaId);
