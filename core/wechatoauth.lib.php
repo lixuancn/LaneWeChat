@@ -30,7 +30,7 @@ class WeChatOAuth{
         $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$redirect_uri.'&response_type='.$response_type.'&scope='.$scope.'&state='.$state.'#wechat_redirect';
         header('Location: '.$url, true, 301);
         //请求微信接口
-//        $result = CurlBusiness::callWebServer($url);
+//        $result = Curl::callWebServer($url);
 //        return $result;
     }
 
@@ -52,7 +52,7 @@ class WeChatOAuth{
         //构造请求微信接口的URL
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$appid.'&secret='.$secret.'&code='.$code.'&grant_type='.$grant_type.'';
         //请求微信接口, Array(access_token, expires_in, refresh_token, openid, scope)
-        return CurlBusiness::callWebServer($url);
+        return Curl::callWebServer($url);
     }
 
     /**

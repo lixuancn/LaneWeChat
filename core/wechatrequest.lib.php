@@ -204,7 +204,9 @@ class WechatRequest{
      */
     public static function eventClick(&$request){
 		//获取该分类的信息
-        return ClickBusiness::getClickChoice($request);
+        $eventKey = $request['eventkey'];
+        $content = '收到点击菜单事件，您设置的key是' . $eventKey;
+        return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
     /**

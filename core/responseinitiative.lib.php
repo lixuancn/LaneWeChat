@@ -36,7 +36,7 @@ class ResponseInitiative{
         );
         $template = json_encode($template);
 
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
     /**
@@ -59,7 +59,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
     /**
@@ -82,7 +82,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
     /**
@@ -109,7 +109,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
     /**
@@ -140,7 +140,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
     /**
@@ -181,7 +181,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return CurlBusiness::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
     }
 
 

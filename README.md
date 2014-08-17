@@ -15,6 +15,7 @@
 
 Developer Blog：http://www.lanecn.com
 
+文档地址：<a href="http://www.lanecn.com/article/main/aid-65">http://www.lanecn.com/article/main/aid-65</a>
 
 
 
@@ -177,44 +178,44 @@ Developer Blog：http://www.lanecn.com
 
 
 
-二、AccessToken授权。
+    二、AccessToken授权。
 
-    1、类简介：除了被动相应用户之外，在主动给用户发送消息，用户组管理等高级操作，是需要AccessToken授权的，我们调用一个URL给微信服务器，微信服务器会返回给我们一个散列字符串，在高级操作的时候需要将此串以参数的形式发送。散列字符串10分钟内有效，过期需要重新获取，获取新的后之前的全部失效。
+        1、类简介：除了被动相应用户之外，在主动给用户发送消息，用户组管理等高级操作，是需要AccessToken授权的，我们调用一个URL给微信服务器，微信服务器会返回给我们一个散列字符串，在高级操作的时候需要将此串以参数的形式发送。散列字符串10分钟内有效，过期需要重新获取，获取新的后之前的全部失效。
 
-    2、使用命名空间：use LaneWeChat\Core\AccessToken;
+        2、使用命名空间：use LaneWeChat\Core\AccessToken;
 
-    3、参数：无
+        3、参数：无
 
-    4、获取AccessToken
+        4、获取AccessToken
 
-        AccessToken::getAccessToken(); 该调用会返回微信服务器散列后的AccessToken字符串。
+            AccessToken::getAccessToken(); 该调用会返回微信服务器散列后的AccessToken字符串。
 
-    5、温馨提示
+        5、温馨提示
 
-        如果暂且用不到此功能，请跳过。最后来看这里！
+            如果暂且用不到此功能，请跳过。最后来看这里！
 
-    6、功能补充
+        6、功能补充
 
-        有一个地方需要用户自行完善，根据介绍我们已经知道了，获取AccessToken只有10分钟的有效期，过期需要重新获取。因此，我们需要存储这个AccessToken。
+            有一个地方需要用户自行完善，根据介绍我们已经知道了，获取AccessToken只有10分钟的有效期，过期需要重新获取。因此，我们需要存储这个AccessToken。
 
-        由于大家的存储方式各不相同，有Mysql的，有Redis的，有MongoDB的，还有Session的。所以这里我讲存储和读取给留空了。
+            由于大家的存储方式各不相同，有Mysql的，有Redis的，有MongoDB的，还有Session的。所以这里我讲存储和读取给留空了。
 
-        流程：AccessToken类，public方法只有一个，就是getAccessToken()。这个方法会调用一个私有方法_checkAccessToken()来检测AccessToken是否存在并且是否过期，如果不存在或过期，则调用私有方法_getAccessToken()
+            流程：AccessToken类，public方法只有一个，就是getAccessToken()。这个方法会调用一个私有方法_checkAccessToken()来检测AccessToken是否存在并且是否过期，如果不存在或过期，则调用私有方法_getAccessToken()
 
-        完善步骤：
+            完善步骤：
 
-        1）、打开core/accesstoken.lib.php文件。
+            1）、打开core/accesstoken.lib.php文件。
 
-        2）、私有方法_getAccessToken()的倒数第二行（return是倒数第一行），在这个地方，请讲变量$accessTokenJson存储起来，变量$accessTokenJson是一个字符串。
+            2）、私有方法_getAccessToken()的倒数第二行（return是倒数第一行），在这个地方，请讲变量$accessTokenJson存储起来，变量$accessTokenJson是一个字符串。
 
-        3）、私有方法_checkAccessToken()的第一行就是读取操作（有一行伪代码$accessToken = YourDatabase::get('access_token');），将刚才第二步的存储的东西给读出来，并且赋值给$accessToken。
+            3）、私有方法_checkAccessToken()的第一行就是读取操作（有一行伪代码$accessToken = YourDatabase::get('access_token');），将刚才第二步的存储的东西给读出来，并且赋值给$accessToken。
 
-        4）、在第二步的存储，第三部的读取的时候，请不要修改数据，仅仅完善一个读和存的操作就可以了。
-
-
+            4）、在第二步的存储，第三部的读取的时候，请不要修改数据，仅仅完善一个读和存的操作就可以了。
 
 
-三、主动给用户发送消息。
+
+
+    三、主动给用户发送消息。
 
         1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
 
@@ -271,7 +272,7 @@ Developer Blog：http://www.lanecn.com
 
 
 
-四、用户及用户组管理。
+    四、用户及用户组管理。
 
         1、类简介：获取粉丝列表，创建\修改用户组，讲用户添加\移除到用户组。
 
@@ -318,7 +319,7 @@ Developer Blog：http://www.lanecn.com
 
 
 
-五、网页授权。
+    五、网页授权。
 
         1、类简介：在网页中获取来访用户的数据。
 
@@ -347,7 +348,7 @@ Developer Blog：http://www.lanecn.com
 
 
 
-六、多媒体上传下载
+    六、多媒体上传下载
 
         1、类简介：在网页中获取来访用户的数据。上传的多媒体文件有格式和大小限制，如下：
 
@@ -378,6 +379,64 @@ Developer Blog：http://www.lanecn.com
         5、下载：根据mediaId下载一个多媒体文件。
 
             Media::download($mediaId);
+
+
+
+    七、自定义菜单
+
+        1、类简介：添加自定义菜单。最多可以有三个一级菜单，每个一级菜单最多可以有五个菜单。一级菜单最多4个汉字，二级菜单最多7个汉字。创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。建议测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。
+
+            摘自微信官方网站：目前自定义菜单接口可实现两种类型按钮，如下：
+
+            click：
+
+                用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event的结构给开发者，并且带上按钮中开发者填写的key值，开发者可以通过自定义的key值与用户进行交互；
+
+            view：
+
+                用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的url值	（即网页链接），达到打开网页的目的，建议与网页授权获取用户基本信息接口结合，获得用户的登入个人信息。
+
+            总结一下哦，就是微信的菜单分两种，一种是view型，就是你设置一个网址，点了这个菜单之后就跳到你设置的网址去了。另一种就是click型，你设置一个key，然后用户点击的时候会通过本框架唯一入口wechat.php发送一个消息类型为event的请求，在wechatrequest.lib.php文件下的eventClick方法中可以使用。
+
+        2、使用命名空间：use LaneWeChat\Core\Menu;
+
+        3、设置菜单：是所有的菜单数据全部发送一次，可不是每新增一个只发一个菜单。
+
+            Menu::setMenu($menuList);
+
+            $menuLis 是菜单列表，结构如下：
+
+            $menuList ＝ array(
+
+                                array('id'=>'1', 'pid'=>'0', 'name'=>'顶级分类一', 'type'=>'', 'code'=>''),
+
+                                array('id'=>'2', 'pid'=>'1', 'name'=>'分类一子分类一', 'type'=>'2', 'code'=>'lane_wechat_menu_1_1'),
+
+                                array('id'=>'3', 'pid'=>'1', 'name'=>'分类一子分类二', 'type'=>'1', 'code'=>'http://www.lanecn.com'),
+
+                                array('id'=>'4', 'pid'=>'0', 'name'=>'顶级分类二', 'type'=>'1', 'code'=>'http://www.php.net/'),
+
+                                array('id'=>'5', 'pid'=>'0', 'name'=>'顶级分类三', 'type'=>'2', 'code'=>'lane_wechat_menu_3'),
+
+                            );
+
+            'id'是您的系统中对分类的唯一编号；
+
+            'pid'是该分类的上级分类，顶级分类则填写0；
+
+            'name'是分类名称；
+
+            'type'是菜单类型，数字1或者2，1是view类型，2是click类型，如果该分类下有子分类请务必留空；
+
+            'code'是view类型的URL或者click类型的自定义key，如果该分类下有子分类请务必留空。
+
+        4、获取微信菜单：获取到的是已经设置过的菜单列表，格式为Json，是微信服务器返回的原始数据。
+
+            Menu::getMenu();
+
+        5、删除微信菜单：将会删除设置过的所有菜单（一键清空）。
+
+            Menu::delMenu();
 
 
 

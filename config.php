@@ -10,8 +10,8 @@ namespace LaneWeChat;
  * @Blog: Http://www.lanecn.com
  */
 //版本号
-define('LANEWECHAT_VERSION', '1.0');
-define('LANEWECHAT_VERSION_DATE', '2014-08-04');
+define('LANEWECHAT_VERSION', '1.2');
+define('LANEWECHAT_VERSION_DATE', '2014-08-17');
 
 //微信公众平台相关
 define('WECHAT_TOKEN', 'weixin');
@@ -46,5 +46,6 @@ include_once 'core/usermanage.lib.php';
 include_once 'core/responseinitiative.lib.php';
 //引入多媒体管理类
 include_once 'core/media.lib.php';
-
+//引入自定义菜单类
+include_once 'core/menu.lib.php';
 ?>
