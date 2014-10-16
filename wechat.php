@@ -12,11 +12,16 @@ use LaneWeChat\Core\Wechat;
  * @Time: 下午4:00
  * @Blog: Http://www.lanecn.com
  */
-
 //引入配置文件
-include_once 'config.php';
+include_once __DIR__.'/config.php';
+//引入自动载入函数
+include_once __DIR__.'/autoloader.php';
+//调用自动载入函数
+AutoLoader::register();
 
+//初始化微信类
 $wechat = new WeChat(WECHAT_TOKEN, TRUE);
+
 //首次使用需要注视掉下面这1行（21行），并打开最后一行（24行）
 echo $wechat->run();
 
