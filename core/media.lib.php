@@ -28,8 +28,8 @@ class Media{
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token='.$accessToken.'&type='.$type;
         $data = array();
-        $data['media'] = $filename;
-        return Curl::callWebServer($queryUrl, $data, 'POST');
+        $data['media'] = '@'.$filename;
+        return Curl::callWebServer($queryUrl, $data, 'POST', 1 , 0);
     }
 
     /**
@@ -50,6 +50,6 @@ class Media{
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='.$accessToken.'&media_id='.$mediaId;
-        return Curl::callWebServer($queryUrl, '', 'GET');
+        return Curl::callWebServer($queryUrl, '', 'GET', 0);
     }
 }

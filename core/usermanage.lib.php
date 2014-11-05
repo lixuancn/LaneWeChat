@@ -106,14 +106,13 @@ class UserManage{
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$accessToken.'&openid='.$openId;
-        $data = '';
-        return Curl::callWebServer($queryUrl, $data, 'GET');
+        return Curl::callWebServer($queryUrl, '', 'GET');
     }
 
     /**
      * @descrpition 获取关注者列表
      * @param $next_openid 第一个拉取的OPENID，不填默认从头开始拉取
-     * @return JSON {"total":2,"count":2,"data":{"openid":["","OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
+     * @return JSON {"total":2,"count":2,"data":{"openid":["OPENID1","OPENID2"]},"next_openid":"NEXT_OPENID"}
      */
     public static function getFansList($next_openid=''){
         //获取ACCESS_TOKEN
@@ -123,8 +122,23 @@ class UserManage{
         }else{
             $queryUrl = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token='.$accessToken.'&next_openid='.$next_openid;
         }
-        $data = '';
-        return Curl::callWebServer($queryUrl, $data, 'GET');
+        return Curl::callWebServer($queryUrl, '', 'GET');
+    }
+
+    /**
+     * 设置备注名 开发者可以通过该接口对指定用户设置备注名，该接口暂时开放给微信认证的服务号。
+     * @param $openId 用户的openId
+     * @param $remark 新的昵称
+     * @return array('errorcode'=>0, 'errmsg'=>'ok') 正常时是0
+    }
+
+     */
+    public static function setRemark($openId, $remark){
+        //获取ACCESS_TOKEN
+        $accessToken = AccessToken::getAccessToken();
+        $queryUrl = 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token='.$accessToken;
+        $data = json_encode(array('openid'=>$openId, 'remark'=>$remark));
+        return Curl::callWebServer($queryUrl, $data, 'POST');
     }
 
     /**

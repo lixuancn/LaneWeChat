@@ -21,11 +21,84 @@ Developer Blog：http://www.lanecn.com
 
 更新日志：
 
-    2014-08-17：1.2版本。新增自定义菜单功能
+    2014-11-05：1.4版本
+
+        兼容性：
+            设置菜单Menu::setMenu($menuList)参数结构和返回值重写，不向下兼容。
+        根目录下新增lanewechat.php：
+            在项目用需要使用本SDK的地方，只需要include 'lanewechat/lanewechat.php'，然后可以直接ClassName::method()调用即可。
+
+        安全性升级：
+            因为SSL爆出高危漏洞，公众平台在2014.11.30起，将关闭SSLv2，SSLv3版本的支持。根据官方实例，LaneWeChat的CURL类中也将使用curl_setopt($curl, CURLOPT_SSLVERSION, 1)
+
+        新增消息体签名加解密验证（EncodingAESKey），默认为空，为空时微信公众号平台会自动生成。也可以开发者自行手动指定。
+
+        新增语音消息识别
+
+        新增高级群发接口：
+            1 上传图文消息素材
+            2 根据分组进行群发，可发送图文消息，文本消息，图片消息，语音消息，视频消息。
+            3 根据OpenID列表群发，，可发送图文消息，文本消息，图片消息，语音消息，视频消息。
+            4 删除群发
+            5 事件推送群发结果
+
+        新增模板消息接口：
+            1、主动推送给用户模板消息的接口
+            2、被动接收微信服务器发送的关于主动推送模板消息的结果通知。
+
+        用户管理接口：
+            1、新增设置备注名。开发者可以通过该接口对指定用户设置备注名，该接口暂时开放给微信认证的服务号。
+
+        网页授权接口：
+            注意：此access_token与基础支持的access_token不同。
+            1、新增刷新access_token。由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，refresh_token拥有较长的有效期（7天、30天、60天、90天），当refresh_token失效的后，需要用户重新授权。
+            2、新增scope为snsapi_userinfo的模式下（会在网页弹出一个授权框），拉取用户信息的接口。
+            3、新增检验授权凭证（access_token）是否有效接口
+
+        新增多客服功能：
+            1、新增将消息转发到多客服接口：在接收到用户发送的消息时，调用ResponsePassive::forwardToCustomService($fromusername, $tousername)，微信服务器在收到这条消息时，会把这次发送的消息转到多客服系统。用户被客服接入以后，客服关闭会话以前，处于会话过程中，用户发送的消息均会被直接转发至客服系统。
+            2、新增获取客服聊天记录接口：在需要时，开发者可以通过获取客服聊天记录接口，获取多客服的会话记录，包括客服和用户会话的所有消息记录和会话的创建、关闭等操作记录。利用此接口可以开发如“消息记录”、“工作监控”、“客服绩效考核”等功能。
+
+        自定义菜单：
+            警告：设置菜单Menu::setMenu($menuList)参数结构和返回值重写，自1.4版本起不向下兼容。
+            注意：所有新增的菜单类型，仅支持微信iPhone5.4.1以上版本，和Android5.4以上版本的微信用户，旧版本微信用户点击后将没有回应，开发者也不能正常接收到事件推送。
+            1、新增“scancode_push：扫码推事件”类型菜单
+                用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后显示扫描结果（如果是URL，将进入URL），且会将扫码的结果传给开发者，开发者可以下发消息。
+            2、新增“scancode_waitmsg：扫码推事件且弹出‘消息接收中’提示框”类型菜单
+                用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后，将扫码的结果传给开发者，同时收起扫一扫工具，然后弹出“消息接收中”提示框，随后可能会收到开发者下发的消息。
+            3、新增“pic_sysphoto：弹出系统拍照发图”类型菜单
+                用户点击按钮后，微信客户端将调起系统相机，完成拍照操作后，会将拍摄的相片发送给开发者，并推送事件给开发者，同时收起系统相机，随后可能会收到开发者下发的消息。
+            4、新增“pic_photo_or_album：弹出拍照或者相册发图”类型菜单
+                用户点击按钮后，微信客户端将弹出选择器供用户选择“拍照”或者“从手机相册选择”。用户选择后即走其他两种流程。
+            5、新增“pic_weixin：弹出微信相册发图器”类型菜单
+                用户点击按钮后，微信客户端将调起微信相册，完成选择操作后，将选择的相片发送给开发者的服务器，并推送事件给开发者，同时收起相册，随后可能会收到开发者下发的消息。
+            6、新增“location_select：弹出地理位置选择器”类型菜单
+                用户点击按钮后，微信客户端将调起地理位置选择工具，完成选择操作后，将选择的地理位置发送给开发者的服务器，同时收起位置选择工具，随后可能会收到开发者下发的消息。
+            7、新增了以上6种菜单类型、view（点击跳转链接）的菜单类型的被动响应的支持。默认讲点击菜单的事件推送数据发送文本消息返回给用户。开发者请自行修改。
+
+        新增语义理解接口
+            1、如输入“查一下明天从北京到上海的南航机票”，类型为“flight,hotel”，则返回机票信息。
+
+        新增推广支持：
+            1、新增获取二维码接口。二维码分临时二维码和永久二维码。第一步先获取ticket，第二部是拿ticket获取二维码图片。二维码可以保存为文件，也可以展示预览。
+            2、新增长链接转短链接接口。
+
+        新增实例示范：
+            1、被动响应用户 - 发送图文消息
+            2、群发图文消息
+
+        关于获取用户信息的新亮点 - unionId：
+            获取用户信息是根据openId获取，同一个微信用户对于不同的公众号，是不同的openId。那问题就来了，如果你有多个公众号，想要共享一份用户数据，可是同一个用户在不同的公众号是不同的openId，我们无法判断是否是同一个用户，现在微信引入了UnionId的概念。
+            如果开发者有在多个公众号，或在公众号、移动应用之间统一用户帐号的需求，需要前往微信开放平台（open.weixin.qq.com）绑定公众号后，才可利用UnionID机制来满足上述需求。
+            在绑定了公众号后，我们根据openId获取用户信息的时候，会新增一个字段“unionid”，只要是同一个用户，在不同的公众号用不同的openId获取用户信息的时候unionid是相同的。
+            此功能不需要新增/修改代码，只需要在微信开放平台绑定公众号就可以了。仍旧使用获取用户信息接口UserManage::getUserInfo($openId);
+
+
+    2014-10-14：1.2.2版本。新增自动载入函数
+
+    2014-08-17：1.2版本。新增自定义菜单功能、新增多媒体上传下载功能。
 
     2014-08-07：1.0版本
-
-
 
 
 文档目录：
@@ -70,17 +143,21 @@ Developer Blog：http://www.lanecn.com
 
 如何安装：
 
-    1、本框架以代码包的插件形式放在项目的目录中即可。
+    1、本框架以代码包的插件形式放在项目的目录中即可。调用时只需要include 'lanewechat/lanewechat.php'即可。如：
+            <?php
+            include 'lanewechat/lanewechat.php';
+            //获取自定义菜单列表
+            $menuList = Menu::getMenu();
 
     2、配置项：打开根目录下的config.php，修改定义常量WECHAT_APPID，WECHAT_APPSECRET，WECHAT_URL。其中前两项可以在微信公众号官网的开发者页面中找到，而WECHAT_URL是你微信项目的URL，以http://开头
 
-    3、本框架的唯一入口为根目录下的wechat.php
+    3、本框架的外部访问唯一入口为根目录下的wechat.php，本框架的内部调用唯一入口为根目录下的lanewechat.php。两者的区别是wechat.php是通过http://www.abc.com/lanewechat/wechat.php访问，是留给微信平台调用的入口。而lanewechat.php是我们项目内部调用时需要include 'lanewechat/lanewechat.php';
 
-    4、首次使用时，请打开根目录下的wechat.php，注释掉21行，并且打开注释第24行。
+    4、首次使用时，请打开根目录下的wechat.php，注释掉26行，并且打开注释第29行。
 
     5、在微信开发者-填写服务器配置页面，填写URL为http://www.lanecn.com/wechat.php，保证该URL可以通过80端口正常访问（微信服务器目前只支持80端口），并且将Token填写为config.php中的WECHAT_TOKEN常量的内容（可以修改）。
 
-    6、微信服务器在第4步验证通过后，反向操作第4步，即注释掉第24行，打开注释第21行。至此，安装配置完成。
+    6、微信服务器在第4步验证通过后，反向操作第4步，即注释掉第27行，打开注释第26行。至此，安装配置完成。
 
 
 
@@ -325,6 +402,24 @@ Developer Blog：http://www.lanecn.com
 
             UserManage::getNetworkState();
 
+        12、设置备注名 开发者可以通过该接口对指定用户设置备注名，该接口暂时开放给微信认证的服务号。
+
+            UserManage::setRemark($openId, $remark);
+
+            $openId：用户的openId
+
+            $remark：新的昵称
+
+        13、关于获取用户信息的新亮点 - unionId：
+
+            获取用户信息是根据openId获取，同一个微信用户对于不同的公众号，是不同的openId。那问题就来了，如果你有多个公众号，想要共享一份用户数据，可是同一个用户在不同的公众号是不同的openId，我们无法判断是否是同一个用户，现在微信引入了UnionId的概念。
+
+            如果开发者有在多个公众号，或在公众号、移动应用之间统一用户帐号的需求，需要前往微信开放平台（open.weixin.qq.com）绑定公众号后，才可利用UnionID机制来满足上述需求。
+
+            在绑定了公众号后，我们根据openId获取用户信息的时候，会新增一个字段“unionid”，只要是同一个用户，在不同的公众号用不同的openId获取用户信息的时候unionid是相同的。
+
+            此功能不需要新增/修改代码，只需要在微信开放平台绑定公众号就可以了。仍旧使用获取用户信息接口UserManage::getUserInfo($openId);
+
 
 
 
@@ -353,6 +448,33 @@ Developer Blog：http://www.lanecn.com
             参数：$code getCode()获取的code参数。$code = $_GET['code'];
 
             WeChatOAuth::getAccessTokenAndOpenId($code);
+
+        6、刷新access_token（如果需要）
+
+            由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，refresh_token拥有较长的有效期（7天、30天、60天、90天），当refresh_token失效的后，需要用户重新授权。
+
+            WeChatOAuth::refreshToken($refreshToken);
+
+                $refreshToken：通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是refresh_token，就是这里的参数
+
+        7、拉取用户信息(需scope为 snsapi_userinfo)
+
+            如果网页授权作用域为snsapi_userinfo，则此时开发者可以通过access_token和openid拉取用户信息了。
+
+            WeChatOAuth::getUserInfo($accessToken, $openId, $lang='zh_CN');
+
+                $accessToken:网页授权接口调用凭证。通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是access_token，就是这里的参数。注意：此access_token与基础支持的access_token不同。
+
+                $openId:用户的唯一标识
+
+                $lang:返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+
+        8、检验授权凭证（access_token）是否有效
+
+            WeChatOAuth::checkAccessToken($accessToken, $openId){
+
+                $accessToken：网页授权接口调用凭证。通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是access_token，就是这里的参数。注意：此access_token与基础支持的access_token不同。
+
 
 
 
@@ -395,7 +517,11 @@ Developer Blog：http://www.lanecn.com
 
         1、类简介：添加自定义菜单。最多可以有三个一级菜单，每个一级菜单最多可以有五个菜单。一级菜单最多4个汉字，二级菜单最多7个汉字。创建自定义菜单后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。建议测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。
 
-            摘自微信官方网站：目前自定义菜单接口可实现两种类型按钮，如下：
+        警告：设置菜单Menu::setMenu($menuList)参数结构和返回值重写，自1.4版本起不向下兼容。
+
+        注意：所有新增的菜单类型（除了click类型和view类型），仅支持微信iPhone5.4.1以上版本，和Android5.4以上版本的微信用户，旧版本微信用户点击后将没有回应，开发者也不能正常接收到事件推送。
+
+        摘自微信官方网站：目前自定义菜单接口可实现两种类型按钮，如下：
 
             click：
 
@@ -403,9 +529,31 @@ Developer Blog：http://www.lanecn.com
 
             view：
 
-                用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的url值	（即网页链接），达到打开网页的目的，建议与网页授权获取用户基本信息接口结合，获得用户的登入个人信息。
+                用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的url值（即网页链接），达到打开网页的目的，建议与网页授权获取用户基本信息接口结合，获得用户的登入个人信息。
 
             总结一下哦，就是微信的菜单分两种，一种是view型，就是你设置一个网址，点了这个菜单之后就跳到你设置的网址去了。另一种就是click型，你设置一个key，然后用户点击的时候会通过本框架唯一入口wechat.php发送一个消息类型为event的请求，在wechatrequest.lib.php文件下的eventClick方法中可以使用。
+
+            1、新增“scancode_push：扫码推事件”类型菜单
+                用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后显示扫描结果（如果是URL，将进入URL），且会将扫码的结果传给开发者，开发者可以下发消息。
+
+            2、新增“scancode_waitmsg：扫码推事件且弹出‘消息接收中’提示框”类型菜单
+                用户点击按钮后，微信客户端将调起扫一扫工具，完成扫码操作后，将扫码的结果传给开发者，同时收起扫一扫工具，然后弹出“消息接收中”提示框，随后可能会收到开发者下发的消息。
+
+            3、新增“pic_sysphoto：弹出系统拍照发图”类型菜单
+                用户点击按钮后，微信客户端将调起系统相机，完成拍照操作后，会将拍摄的相片发送给开发者，并推送事件给开发者，同时收起系统相机，随后可能会收到开发者下发的消息。
+
+            4、新增“pic_photo_or_album：弹出拍照或者相册发图”类型菜单
+                用户点击按钮后，微信客户端将弹出选择器供用户选择“拍照”或者“从手机相册选择”。用户选择后即走其他两种流程。
+
+            5、新增“pic_weixin：弹出微信相册发图器”类型菜单
+                用户点击按钮后，微信客户端将调起微信相册，完成选择操作后，将选择的相片发送给开发者的服务器，并推送事件给开发者，同时收起相册，随后可能会收到开发者下发的消息。
+
+            6、新增“location_select：弹出地理位置选择器”类型菜单
+                用户点击按钮后，微信客户端将调起地理位置选择工具，完成选择操作后，将选择的地理位置发送给开发者的服务器，同时收起位置选择工具，随后可能会收到开发者下发的消息。
+
+            7、新增了以上6种菜单类型、view（点击跳转链接）的菜单类型的被动响应的支持。默认讲点击菜单的事件推送数据发送文本消息返回给用户。开发者请自行修改。
+
+
 
         2、使用命名空间：use LaneWeChat\Core\Menu;
 
@@ -417,17 +565,17 @@ Developer Blog：http://www.lanecn.com
 
             $menuList ＝ array(
 
-                                array('id'=>'1', 'pid'=>'0', 'name'=>'顶级分类一', 'type'=>'', 'code'=>''),
+                array('id'=>'1', 'pid'=>'0', 'name'=>'顶级分类一', 'type'=>'', 'code'=>''),
 
-                                array('id'=>'2', 'pid'=>'1', 'name'=>'分类一子分类一', 'type'=>'2', 'code'=>'lane_wechat_menu_1_1'),
+                array('id'=>'2', 'pid'=>'1', 'name'=>'分类一子分类一', 'type'=>'click', 'code'=>'lane_wechat_menu_1_1'),
 
-                                array('id'=>'3', 'pid'=>'1', 'name'=>'分类一子分类二', 'type'=>'1', 'code'=>'http://www.lanecn.com'),
+                array('id'=>'3', 'pid'=>'1', 'name'=>'分类一子分类二', 'type'=>'1', 'code'=>'http://www.lanecn.com'),
 
-                                array('id'=>'4', 'pid'=>'0', 'name'=>'顶级分类二', 'type'=>'1', 'code'=>'http://www.php.net/'),
+                array('id'=>'4', 'pid'=>'0', 'name'=>'顶级分类二', 'type'=>'1', 'code'=>'http://www.php.net/'),
 
-                                array('id'=>'5', 'pid'=>'0', 'name'=>'顶级分类三', 'type'=>'2', 'code'=>'lane_wechat_menu_3'),
+                array('id'=>'5', 'pid'=>'0', 'name'=>'顶级分类三', 'type'=>'2', 'code'=>'lane_wechat_menu_3'),
 
-                            );
+            );
 
             'id'是您的系统中对分类的唯一编号；
 
@@ -435,9 +583,11 @@ Developer Blog：http://www.lanecn.com
 
             'name'是分类名称；
 
-            'type'是菜单类型，数字1或者2，1是view类型，2是click类型，如果该分类下有子分类请务必留空；
+            'type'是菜单类型，如果该分类下有子分类请务必留空；
 
-            'code'是view类型的URL或者click类型的自定义key，如果该分类下有子分类请务必留空。
+                'type'的值从以下类型中选择：click、view、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album、pic_weixin、location_select。
+
+            'code'是view类型的URL或者其他类型的自定义key，如果该分类下有子分类请务必留空。
 
         4、获取微信菜单：获取到的是已经设置过的菜单列表，格式为Json，是微信服务器返回的原始数据。
 
@@ -450,9 +600,238 @@ Developer Blog：http://www.lanecn.com
 
 
 
+    八、高级群发接口
+
+        1、类简介：根据分组、openId列表进行群发（推送）。图文消息需要先将图文消息当作一个素材上传，然后再群发，其他类型的消息直接群发即可。
+
+        注意：推送后用户到底是否成功接受，微信会向公众号推送一个消息。消息类型为事件消息，可以在lanewechat/wechatrequest.lib.php文件中的方法eventMassSendJobFinish(&$request)中收到这条消息。
+
+        2、使用命名空间：use LaneWeChat\Core\AdvancedBroadcast;
+
+        3、上传图文消息。创建一个图文消息，保存到微信服务器，可以得到一个id代表这个图文消息，发送的时候根据这个id发送就可以了。
+
+            Menu::uploadNews($articles);
+
+            $articles 是图文消息列表，结构如下：
+
+            $articles = array(
+
+                array('thumb_media_id'=>'多媒体ID，由多媒体上传接口获得' , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'是否设置为封面（0或者1）'),
+
+                array('thumb_media_id'=>'多媒体ID，由多媒体上传接口获得' , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'是否设置为封面（0或者1）'),
+
+                                        );
+
+            'thumb_media_id'多媒体ID，由多媒体上传接口获得：Media::upload($filename, $type);
+
+            'author'作者
+
+            'title'标题
+
+            'content_source_url'一个URL，点击“阅读全文”跳转的地址
+
+            'digest'摘要
+
+            'show_cover_pic'0或1，是否设置为封面。
+
+        下面的方法，图文消息的参数mediaId是由上面这个方法（3）Menu::uploadNews($articles);获得的，其他的mediaId是多媒体上传获得的Media::upload($filename, $type);
+
+        4、根据分组进行群发 - 发送图文消息：
+
+            AdvancedBroadcast::sentNewsByGroup($groupId, $mediaId);
+
+        5、根据分组进行群发 - 发送文本消息
+
+            AdvancedBroadcast::sentTextByGroup($groupId, $content);
+
+        6、根据分组进行群发 - 发送语音消息
+
+            AdvancedBroadcast::sentVoiceByGroup($groupId, $mediaId);
+
+        7、根据分组进行群发 - 发送图片消息
+
+            AdvancedBroadcast::sentImageByGroup($groupId, $mediaId);
+
+        8、根据分组进行群发 - 发送视频消息
+
+            AdvancedBroadcast::sentVideoByGroup($mediaId, $title, $description, $groupId);
+
+        9、根据OpenID列表群发 - 发送图文消息
+
+            AdvancedBroadcast::sentNewsByOpenId($toUserList, $mediaId);
+
+        10、根据OpenID列表群发 - 发送文本消息
+
+            AdvancedBroadcast::sentTextByOpenId($toUserList, $content);
+
+        11、根据OpenID列表群发 - 发送语音消息
+
+            AdvancedBroadcast::sentVoiceByOpenId($toUserList, $mediaId);
+
+        12、根据OpenID列表群发 - 发送图片消息
+
+            AdvancedBroadcast::sentImageByOpenId($toUserList, $mediaId);
+
+        13、根据OpenID列表群发 - 发送视频消息
+
+            AdvancedBroadcast::sentVideoByOpenId($toUserList, $mediaId, $title, $description);
+
+        14、删除群发
+
+            请注意，只有已经发送成功的消息才能删除删除消息只是将消息的图文详情页失效，已经收到的用户，还是能在其本地看到消息卡片。 另外，删除群发消息只能删除图文消息和视频消息，其他类型的消息一经发送，无法删除。
+
+            AdvancedBroadcast::delete($msgId);
+
+            $msgId:以上的群发接口成功时都会返回msg_id这个字段
+
+
+
+
+    九、多客服接口
+
+        1、类简介：客服功能接口。
+
+        2、使用命名空间：use LaneWeChat\Core\CustomService;
+
+        3、获取客服聊天记录接口，有分页，一次获取一页，一页最多1000条。不能跨日。
+
+            在需要时，开发者可以通过获取客服聊天记录接口，获取多客服的会话记录，包括客服和用户会话的所有消息记录和会话的创建、关闭等操作记录。利用此接口可以开发如“消息记录”、“工作监控”、“客服绩效考核”等功能。
+
+            CustomService::getRecord($startTime, $endTime, $pageIndex=1, $pageSize=1000, $openId='')
+
+            'startTime':查询开始时间，UNIX时间戳
+
+            'startTime':查询结束时间，UNIX时间戳，每次查询不能跨日查询
+
+        4、将用户发送的消息转发到客服：
+
+            调用ResponsePassive::forwardToCustomService($fromusername, $tousername)。
+
+            如用户在微信给公众号发送一条文本消息“iphone 6 多少钱？”，我们就可以在lanewechat/wechatrequest.lib.php文件中的方法text(&$request)中收到这条消息（如果不了解为什么会在这里收到文本消息，请重头再看文档）。
+
+            然后在text(&$request)方法中，我们可以调用ResponsePassive::forwardToCustomService($request['fromusername'], $request['tousername'])。那么刚才用户发的“iphone 6 多少钱？”就会被转发到客服系统，在微信的客服客户端中就可以收到了。
+
+
+
+
+    十、智能接口
+
+        1、类简介：智能接口。
+
+        2、使用命名空间：use LaneWeChat\Core\IntelligentInterface;
+
+        3、语义理解：比如输入文本串，如“查一下明天从北京到上海的南航机票”就可以收到关于这个问题的答案。
+
+            单类别意图比较明确，识别的覆盖率比较大，所以如果只要使用特定某个类别，建议将category只设置为该类别。
+
+            IntelligentInterface::semanticSemproxy($query, $category, $openId, $latitude='', $longitude='', $region='', $city=''){
+
+            $query 输入文本串，如“查一下明天从北京到上海的南航机票"
+
+            $category String 需要使用的服务类型，如“flight,hotel”，多个用“,”隔开，不能为空。详见《接口协议文档》
+
+            $latitude Float 纬度坐标，与经度同时传入；与城市二选一传入。详见《接口协议文档》
+
+            $longitude Float 经度坐标，与纬度同时传入；与城市二选一传入。详见《接口协议文档》
+
+            $region String 区域名称，在城市存在的情况下可省；与经纬度二选一传入。详见《接口协议文档》
+
+            $city 城市名称，如“北京”，与经纬度二选一传入
+
+            $openId
+
+            《接口协议文档》：http://mp.weixin.qq.com/wiki/images/1/1f/微信语义理解协议文档.zip
+
+
+
+
+    十一、推广支持
+
+        1、类简介：推广支持。
+
+        2、使用命名空间：use LaneWeChat\Core\Popularize;
+
+        3、生成带参数的二维码 - 第一步 创建二维码ticket
+
+            获取带参数的二维码的过程包括两步，首先创建二维码ticket，然后凭借ticket到指定URL换取二维码。
+
+            目前有2种类型的二维码，分别是临时二维码和永久二维码，
+
+            前者有过期时间，最大为1800秒，但能够生成较多数量，后者无过期时间，数量较少（目前参数只支持1--100000）。
+
+            两种二维码分别适用于帐号绑定、用户来源统计等场景。
+
+            Popularize::createTicket($type, $expireSeconds, $sceneId);
+
+            $type Int 临时二维码类型为1，永久二维码类型为2
+
+            $expireSeconds Int 过期时间，只在类型为临时二维码时有效。最大为1800，单位秒
+
+            $sceneId Int 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
+
+        4、生成带参数的二维码 - 第二步 通过ticket换取二维码
+
+            public static function getQrcode($ticket, $filename='');
+
+            $ticket Popularize::createTicket()获得的
+
+            $filename String 文件路径，如果不为空，则会创建一个图片文件，二维码文件为jpg格式，保存到指定的路径
+
+            返回值：如果传递了第二个参数filename则会在filename指定的路径生成一个二维码的图片。如果第二个参数filename为空，则直接echo本函数的返回值，并在调用页面添加header('Content-type: image/jpg');，将会展示出一个二维码的图片。
+
+        5、将一条长链接转成短链接。
+
+           主要使用场景：开发者用于生成二维码的原链接（商品、支付二维码等）太长导致扫码速度和成功率下降，将原长链接通过此接口转成短链接再生成二维码将大大提升扫码速度和成功率。
+
+           Popularize::long2short($longUrl);
+
+           $longUrl String 需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url
+
+
+
+
+    十二、模板消息接口
+
+        1、类简介：模板消息仅用于公众号向用户发送重要的服务通知，只能用于符合其要求的服务场景中，如信用卡刷卡通知，商品购买成功通知等。不支持广告等营销类消息以及其它所有可能对用户造成骚扰的消息。
+
+        关于使用规则，请注意：
+            1、所有服务号都可以在功能->添加功能插件处看到申请模板消息功能的入口，但只有认证后的服务号才可以申请模板消息的使用权限并获得该权限；
+            2、需要选择公众账号服务所处的2个行业，每月可更改1次所选行业；
+            3、在所选择行业的模板库中选用已有的模板进行调用；
+            4、每个账号可以同时使用10个模板。
+            5、当前每个模板的日调用上限为10000次。
+
+        关于接口文档，请注意：
+            1、模板消息调用时主要需要模板ID和模板中各参数的赋值内容；
+            2、模板中参数内容必须以".DATA"结尾，否则视为保留字；
+            3、模板保留符号"{{ }}"。
+
+        2、使用命名空间：use LaneWeChat\Core\TemplateMessage;
+
+        3、向用户推送模板消息
+
+            TemplateMessage::sendTemplateMessage($data, $touser, $templateId, $url, $topcolor='#FF0000'){
+                $data = array(
+                       'first'=>array('value'=>'您好，您已成功消费。', 'color'=>'#0A0A0A')
+                       'keynote1'=>array('value'=>'巧克力', 'color'=>'#CCCCCC')
+                       'keynote2'=>array('value'=>'39.8元', 'color'=>'#CCCCCC')
+                       'keynote3'=>array('value'=>'2014年9月16日', 'color'=>'#CCCCCC')
+                       'keynote3'=>array('value'=>'欢迎再次购买。', 'color'=>'#173177')
+                );
+                $touser 接收方的OpenId。
+                $templateId 模板Id。在公众平台线上模板库中选用模板获得ID
+                $url URL
+                $topcolor 顶部颜色，可以为空。默认是红色
+
+            注意：推送后用户到底是否成功接受，微信会向公众号推送一个消息。消息类型为事件消息，可以在lanewechat/wechatrequest.lib.php文件中的方法eventTemplateSendJobFinish(&$request)中收到这条消息。
+
+
+
+
+
 实例示范：
 
-    1、通过网页授权获得用户信息
+    一、通过网页授权获得用户信息
 
         场景：用户点击了我的自定义菜单，或者我发送的文本消息中包含一个URL，用户打开了我的微信公众号的网页版，我需要获取用户的信息。
 
@@ -471,3 +850,124 @@ Developer Blog：http://www.lanecn.com
             //第三步，获取用户信息
             $userInfo = UserManage::getUserInfo($openId['openid']);
         ?>
+
+    二、被动响应用户 - 发送图文消息
+
+        场景描述：用户给我们的公众号发送了一条消息，我们的公众号被动响应，给用户回复一条图文消息。
+
+        场景举例：用户给我们的公众号发送了“周末聚会”，我们的公众号给用户回复了一条图文消息，有十条，每一条都是一个标题和图片，点击可以连接到一个地址。
+
+        代码：
+
+            //图文列表逐条放入数组
+            $tuwenList = array();
+            $tuwenList[] = array(
+                'title' => '标题：聚会地点一故宫',
+                'description' => '描述：还有人去故宫聚会啊',
+                'pic_url' => 'http://www.gugong.com/logo.jpg',
+                'url' => 'http://www.lanecn.com/',
+            );
+            $tuwenList[] = array(
+                'title' => '标题：聚会地点一八达岭',
+                'description' => '描述：八达岭是聚会的吗？是去看人挤人的！',
+                'pic_url' => 'http://www.badaling.com/logo.jpg',
+                'url' => 'http://www.lanecn.com/',
+            );
+            $item = array();
+            //构建图文列表
+            foreach($tuwenList as $tuwen){
+                $item[] = ResponsePassive::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
+            }
+            //发送图文列表
+            ResponsePassive::news($request['fromusername'], $request['tousername'], $item);
+
+    三、群发图文消息
+
+        场景描述：用户给我们的公众号发送了一条消息，我们的公众号被动响应，给用户回复一条图文消息。
+
+        场景举例：用户给我们的公众号发送了“周末聚会”，我们的公众号给用户回复了一条图文消息，有十条，每一条都是一个标题和图片，点击可以连接到一个地址。
+
+        代码：
+
+            $fansList = \LaneWeChat\Core\UserManage::getFansList();
+            //上传图片
+            $menuId = \LaneWeChat\Core\Media::upload('/var/www/baidu_jgylogo3.jpg', 'image');
+            if(empty($menuId['media_id'])){
+                die('error');
+            }
+            //上传图文消息
+            $list = array();
+            $list[] = array('thumb_media_id'=>$menuId['media_id'] , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'1');
+            $list[] = array('thumb_media_id'=>$menuId['media_id'] , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'0');
+            $list[] = array('thumb_media_id'=>$menuId['media_id'] , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'0');
+            $mediaId = \LaneWeChat\Core\AdvancedBroadcast::uploadNews($list);
+            //给粉丝列表的用户群发图文消息
+            $result = \LaneWeChat\Core\AdvancedBroadcast::sentNewsByOpenId($fansList['data']['openid'], $mediaId);
+
+    四、推送模板消息
+
+        场景描述：公众号推送的模板消息，比如领取红包、滴滴打车红包领取、大众点评微信支付等
+
+        场景举例：我们在实体店的一家服装店买了新衣服，而我们又是会员，他们检测到会员的手机号消费了，有新积分增加，而这个手机号又关注了这家服装店的微信公众号，根据手机号可以在服装店自己的数据库中查到微信粉丝openId，这个时候就会给这个用户发送一个模板消息。
+
+        代码：
+
+            <?php
+            include 'lanewechat.php';
+
+            $data = array(
+                 'first'=>array('value'=>'您好，您已成功消费。', 'color'=>'#0A0A0A')
+                 'keynote1'=>array('value'=>'巧克力', 'color'=>'#CCCCCC')
+                 'keynote2'=>array('value'=>'39.8元', 'color'=>'#CCCCCC')
+                 'keynote3'=>array('value'=>'2014年9月16日', 'color'=>'#CCCCCC')
+                 'keynote3'=>array('value'=>'欢迎再次购买。', 'color'=>'#173177')
+            );
+
+            //$touser 接收方的OpenId。
+            //$templateId 模板Id。在公众平台线上模板库中选用模板获得ID
+            //$url URL 点击查看的时候跳转到URL。
+            //$topcolor 顶部颜色，可以为空。默认是红色
+            \LaneWeChat\Core\TemplateMessage::sendTemplateMessage($data, $touser, $templateId, $url, $topcolor='#FF0000');
+
+    五、添加自定义菜单
+
+        场景描述：公众号推送的模板消息，比如领取红包、滴滴打车红包领取、大众点评微信支付等
+
+        场景举例：我们在实体店的一家服装店买了新衣服，而我们又是会员，他们检测到会员的手机号消费了，有新积分增加，而这个手机号又关注了这家服装店的微信公众号，根据手机号可以在服装店自己的数据库中查到微信粉丝openId，这个时候就会给这个用户发送一个模板消息。
+
+        代码：
+
+            <?php
+            include 'lanewechat.php';
+
+            $menuList = array(
+                array('id'=>'1', 'pid'=>'0', 'name'=>'菜单1', 'type'=>'', 'code'=>''),
+                array('id'=>'2', 'pid'=>'0', 'name'=>'菜单2', 'type'=>'', 'code'=>''),
+                array('id'=>'3', 'pid'=>'0', 'name'=>'地理位置', 'type'=>'location_select', 'code'=>'key_7'),
+                array('id'=>'4', 'pid'=>'1', 'name'=>'点击推事件', 'type'=>'click', 'code'=>'key_1'),
+                array('id'=>'5', 'pid'=>'1', 'name'=>'跳转URL', 'type'=>'view', 'code'=>'http://www.lanecn.com/'),
+                array('id'=>'6', 'pid'=>'2', 'name'=>'扫码推事件', 'type'=>'scancode_push', 'code'=>'key_2'),
+                array('id'=>'7', 'pid'=>'2', 'name'=>'扫码等收消息', 'type'=>'scancode_waitmsg', 'code'=>'key_3'),
+                array('id'=>'8', 'pid'=>'2', 'name'=>'系统拍照发图', 'type'=>'pic_sysphoto', 'code'=>'key_4'),
+                array('id'=>'9', 'pid'=>'2', 'name'=>'弹拍照或相册', 'type'=>'pic_photo_or_album', 'code'=>'key_5'),
+                array('id'=>'10', 'pid'=>'2', 'name'=>'弹微信相册', 'type'=>'pic_weixin', 'code'=>'key_6'),
+            );
+
+            $result = \LaneWeChat\Core\Menu::setMenu($menuList);
+
+    六、页面展示二维码
+
+        场景描述：在网页中展示微信公众号的二维码
+
+        场景举例：太多了吧，就不说了…
+
+        代码：
+
+            <?php
+            include 'lanewechat.php';
+
+            header('Content-type: image/jpg');
+            $ticket = LaneWeChat\Core\Popularize::createTicket(1, 1800, 1);
+            $ticket = $ticket['ticket'];
+            $qrcode = LaneWeChat\Core\Popularize::getQrcode($ticket);
+            echo $qrcode;

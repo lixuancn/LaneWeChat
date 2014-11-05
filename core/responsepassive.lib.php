@@ -192,4 +192,23 @@ XML;
 XML;
         return sprintf($template, $fromusername, $tousername, time(), count($item), implode($item), $funcFlag);
     }
+
+    /**
+     * 将消息转发到多客服
+     * 如果公众号处于开发模式，需要在接收到用户发送的消息时，返回一个MsgType为transfer_customer_service的消息，微信服务器在收到这条消息时，会把这次发送的消息转到多客服系统。用户被客服接入以后，客服关闭会话以前，处于会话过程中，用户发送的消息均会被直接转发至客服系统。
+     * @param $fromusername
+     * @param $tousername
+     * @return string
+     */
+    public static function forwardToCustomService($fromusername, $tousername){
+        $template = <<<XML
+<xml>
+    <ToUserName><![CDATA[%s]]></ToUserName>
+    <FromUserName><![CDATA[%s]]></FromUserName>
+    <CreateTime>%s</CreateTime>
+    <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+</xml>
+XML;
+        return sprintf($template, $fromusername, $tousername, time());
+    }
 }

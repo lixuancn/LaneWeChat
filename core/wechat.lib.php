@@ -22,6 +22,7 @@ class Wechat{
      * @var array
      */
     private $request;
+    private $xml;
 
     /**
      * 初始化，判断此次请求是否为验证请求，并以数组形式保存
@@ -33,10 +34,9 @@ class Wechat{
        if ($this->isValid() && $this->validateSignature($token)) {
             return $_GET['echostr'];
         }
-
         //是否打印错误报告
         $this->debug = $debug;
-
+        $this->xml = $GLOBALS['HTTP_RAW_POST_DATA'];
         //接受并解析微信中心POST发送XML数据
         $xml = (array) simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA);
 
@@ -87,7 +87,7 @@ class Wechat{
      * @return void
      */
     public function run() {
-        return WechatRequest::switchType($this->request);
+        return WechatRequest::switchType($this->request, $this->xml);
     }
 
     public function checkSignature()

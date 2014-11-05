@@ -30,6 +30,8 @@ class Autoloader{
             $filePath = realpath(__DIR__ . (empty($filePath) ? '' : DIRECTORY_SEPARATOR) . $filePath . '.lib.php');
             if(file_exists($filePath)){
                 require_once $filePath;
+            }else{
+                echo $filePath;
             }
         }
     }

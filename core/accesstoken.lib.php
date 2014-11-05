@@ -43,7 +43,9 @@ class AccessToken{
          *
          * 请将变量$accessTokenJson给存起来，这个变量是一个字符串
          */
-
+        $f = fopen('access_token', 'w+');
+        fwrite($f, $accessTokenJson);
+        fclose($f);
         return $accessToken;
     }
 
@@ -54,7 +56,9 @@ class AccessToken{
      */
     private static function _checkAccessToken(){
         //获取access_token。是上面的获取方法获取到后存起来的。
-        $accessToken = YourDatabase::get('access_token');
+//        $accessToken = YourDatabase::get('access_token');
+        $data = file_get_contents('access_token');
+        $accessToken['value'] = $data;
         if(!empty($accessToken['value'])){
             $accessToken = json_decode($accessToken['value'], true);
             if(time() - $accessToken['time'] < $accessToken['expires_in']-10){

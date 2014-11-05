@@ -10,14 +10,17 @@ namespace LaneWeChat;
  * @Blog: Http://www.lanecn.com
  */
 //版本号
-define('LANEWECHAT_VERSION', '1.2.2');
-define('LANEWECHAT_VERSION_DATE', '2014-10-14');
+define('LANEWECHAT_VERSION', '1.4');
+define('LANEWECHAT_VERSION_DATE', '2014-11-05');
 
 //微信公众平台相关
-define('WECHAT_TOKEN', 'weixin');
-define("WECHAT_APPID", 'wxe864803f7865d939');
-define("WECHAT_APPSECRET", '0c451f7c33881c22f067dc73847f0b67');
 define("WECHAT_URL", 'http://www.lanecn.com');
+define('WECHAT_TOKEN', 'weixin');
+define('ENCODING_AES_KEY', "MqAuKoex6FyT5No0OcpRyCicThGs0P1vz4mJ2gwvvkF");
+
+define("WECHAT_APPID", 'wx5d57f64bb4804d90');
+define("WECHAT_APPSECRET", '4b1fa6d9442351ec9268eff05e38f521');
+
 
 ////-----引入系统所需类库-------------------
 ////引入错误消息类
