@@ -2,7 +2,6 @@
 namespace LaneWeChat;
 
 use LaneWeChat\Core\Wechat;
-use LaneWeChat\Core\WechatRequest;
 
 /**
  * 微信插件唯一入口文件.

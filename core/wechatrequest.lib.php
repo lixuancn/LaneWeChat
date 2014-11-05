@@ -16,7 +16,7 @@ class WechatRequest{
      * @param $request
      * @return array|string
      */
-    public static function switchType(&$request, $xml){
+    public static function switchType(&$request){
         $data = array();
         switch ($request['msgtype']) {
             //事件
@@ -92,7 +92,7 @@ class WechatRequest{
                 break;
             //文本
             case 'text':
-                $data = self::text($request, $xml);
+                $data = self::text($request);
                 break;
             //图像
             case 'image':
@@ -127,17 +127,8 @@ class WechatRequest{
      * @param $request
      * @return array
      */
-    public static function text(&$request, $xml){
-        $pc = new \LaneWeChat\Core\Aes\WXBizMsgCrypt(WECHAT_TOKEN, ENCODING_AES_KEY, WECHAT_APPID);
-        $msg = '';
-        $result = $pc->decryptMsg($_GET['msg_signature'], $_GET['timestamp'], $_GET['nonce'], $xml, $msg);
-        $content = 'hi:';
-        if($result !== 0){
-            $content .= 'error:'.$result;
-        }else{
-            $content .= base64_encode($msg);
-        }
-//        $content = json_encode($result);
+    public static function text(&$request){
+        $content = '收到文本消息';
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 

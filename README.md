@@ -6,7 +6,7 @@
 
 版本要求：原则PHP5.3以上
 
-版本规避：若版本低于PHP5.3，则删除本框架所有页面开头namespace一行即可。
+版本规避：若版本低于PHP5.3，则删除本框架所有页面开头“namespace”的行、删除本框架中所有的“use LaneWeChat”开头的行，删除“LaneWeChat\Core”即可。
 
 命名空间：本框架的命名空间均为LaneWeChat开头。
 
@@ -15,7 +15,7 @@
 
 Developer Blog：http://www.lanecn.com
 
-文档地址：<a href="http://www.lanecn.com/article/main/aid-65">http://www.lanecn.com/article/main/aid-65</a>
+文档地址：<a href="http://lanewechat.lanecn.com/">http://lanewechat.lanecn.com/</a>
 
 
 
@@ -967,7 +967,7 @@ Developer Blog：http://www.lanecn.com
             include 'lanewechat.php';
 
             header('Content-type: image/jpg');
-            $ticket = LaneWeChat\Core\Popularize::createTicket(1, 1800, 1);
+            $ticket = \LaneWeChat\Core\Popularize::createTicket(1, 1800, 1);
             $ticket = $ticket['ticket'];
-            $qrcode = LaneWeChat\Core\Popularize::getQrcode($ticket);
+            $qrcode = \LaneWeChat\Core\Popularize::getQrcode($ticket);
             echo $qrcode;

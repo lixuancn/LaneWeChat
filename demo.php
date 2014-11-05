@@ -7,15 +7,15 @@ include 'lanewechat.php';
 $tousername = "用户和公众号兑换的OpenId";
 $mediaId = "通过上传多媒体文件，得到的id。";
 //发送文本内容
-LaneWeChat\Core\ResponseInitiative::text($tousername, '文本消息内容');
+\LaneWeChat\Core\ResponseInitiative::text($tousername, '文本消息内容');
 //发送图片
-LaneWeChat\Core\ResponseInitiative::image($tousername, $mediaId);
+\LaneWeChat\Core\ResponseInitiative::image($tousername, $mediaId);
 //发送语音
-LaneWeChat\Core\ResponseInitiative::voice($tousername, $mediaId);
+\LaneWeChat\Core\ResponseInitiative::voice($tousername, $mediaId);
 //发送视频
-LaneWeChat\Core\ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
+\LaneWeChat\Core\ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
 //发送地理位置
-LaneWeChat\Core\ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+\LaneWeChat\Core\ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
 //发送图文消息
 //创建图文消息内容
 $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
@@ -23,9 +23,9 @@ $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'�
 //构建图文消息格式
 $itemList = array();
 foreach($tuwenList as $tuwen){
-    $itemList[] = LaneWeChat\Core\ResponseInitiative::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
+    $itemList[] = \LaneWeChat\Core\ResponseInitiative::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
 }
-LaneWeChat\Core\ResponseInitiative::news($tousername, $itemList);
+\LaneWeChat\Core\ResponseInitiative::news($tousername, $itemList);
 
 
 /**
@@ -36,15 +36,15 @@ $fromusername = "谁发给你的？（用户的openId）";
 $tousername = "你的公众号Id";
 $mediaId = "通过上传多媒体文件，得到的id。";
 //发送文本
-LaneWeChat\Core\ResponsePassive::text($fromusername, $tousername, '文本消息内容');
+\LaneWeChat\Core\ResponsePassive::text($fromusername, $tousername, '文本消息内容');
 //发送图片
-LaneWeChat\Core\ResponsePassive::image($fromusername, $tousername, $mediaId);
+\LaneWeChat\Core\ResponsePassive::image($fromusername, $tousername, $mediaId);
 //发送语音
-LaneWeChat\Core\ResponsePassive::voice($fromusername, $tousername, $mediaId);
+\LaneWeChat\Core\ResponsePassive::voice($fromusername, $tousername, $mediaId);
 //发送视频
-LaneWeChat\Core\ResponsePassive::video($fromusername, $tousername, $mediaId, '视频标题', '视频描述');
+\LaneWeChat\Core\ResponsePassive::video($fromusername, $tousername, $mediaId, '视频标题', '视频描述');
 //发送音乐
-LaneWeChat\Core\ResponsePassive::music($fromusername, $tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+\LaneWeChat\Core\ResponsePassive::music($fromusername, $tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
 //发送图文
 //创建图文消息内容
 $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
@@ -52,11 +52,11 @@ $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'�
 //构建图文消息格式
 $itemList = array();
 foreach($tuwenList as $tuwen){
-    $itemList[] = LaneWeChat\Core\ResponsePassive::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
+    $itemList[] = \LaneWeChat\Core\ResponsePassive::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
 }
-LaneWeChat\Core\ResponsePassive::news($fromusername, $tousername, $itemList);
+\LaneWeChat\Core\ResponsePassive::news($fromusername, $tousername, $itemList);
 //将消息转发到多客服
-LaneWeChat\Core\ResponsePassive::forwardToCustomService($fromusername, $tousername);
+\LaneWeChat\Core\ResponsePassive::forwardToCustomService($fromusername, $tousername);
 
 /**
  * 用户管理
@@ -64,24 +64,24 @@ LaneWeChat\Core\ResponsePassive::forwardToCustomService($fromusername, $touserna
 $openId = '用户和微信公众号的唯一ID';
 //----分组管理----
 //创建分组
-LaneWeChat\Core\UserManage::createGroup('分组名');
+\LaneWeChat\Core\UserManage::createGroup('分组名');
 //获取分组列表
-LaneWeChat\Core\UserManage::getGroupList();
+\LaneWeChat\Core\UserManage::getGroupList();
 //查询用户所在分组
-LaneWeChat\Core\UserManage::getGroupByOpenId($openId);
+\LaneWeChat\Core\UserManage::getGroupByOpenId($openId);
 //修改分组名
-LaneWeChat\Core\UserManage::editGroupName('分组Id', '新的组名');
+\LaneWeChat\Core\UserManage::editGroupName('分组Id', '新的组名');
 //移动用户分组
-LaneWeChat\Core\UserManage::editUserGroup($openId, '新的分组ID');
+\LaneWeChat\Core\UserManage::editUserGroup($openId, '新的分组ID');
 //---用户管理----
 //获取用户基本信息
-LaneWeChat\Core\UserManage::getUserInfo($openId);
+\LaneWeChat\Core\UserManage::getUserInfo($openId);
 //获取关注者列表
-LaneWeChat\Core\UserManage::getFansList($next_openId='');
+\LaneWeChat\Core\UserManage::getFansList($next_openId='');
 //修改粉丝的备注
-LaneWeChat\Core\UserManage::setRemark($openId, '新昵称');
+\LaneWeChat\Core\UserManage::setRemark($openId, '新昵称');
 //获取网络状态
-LaneWeChat\Core\UserManage::getNetworkState();
+\LaneWeChat\Core\UserManage::getNetworkState();
 
 /**
  * 网页授权
@@ -92,7 +92,7 @@ LaneWeChat\Core\UserManage::getNetworkState();
  * 将会跳转到redirect_uri/?code=CODE&state=STATE 通过GET方式获取code和state
  */
 $redirect_uri = '获取CODE时，发送请求和参数给微信服务器，微信服务器会处理后将跳转到本参数指定的URL页面';
-LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $state=1, $scope='snsapi_base');
+\LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $state=1, $scope='snsapi_base');
 /**
  * Description: 通过code换取网页授权access_token
  * 首先请注意，这里通过code换取的网页授权access_token,与基础支持中的access_token不同。
@@ -101,12 +101,12 @@ LaneWeChat\Core\WeChatOAuth::getCode($redirect_uri, $state=1, $scope='snsapi_bas
  * @param $code getCode()获取的code参数
  */
 $code = $_GET['code'];
-LaneWeChat\Core\WeChatOAuth::getAccessTokenAndOpenId($code);
+\LaneWeChat\Core\WeChatOAuth::getAccessTokenAndOpenId($code);
 
 //上传多媒体
-LaneWeChat\Core\Media::upload($filename, $type);
+\LaneWeChat\Core\Media::upload($filename, $type);
 //下载多媒体
-LaneWeChat\Core\Media::download($mediaId);
+\LaneWeChat\Core\Media::download($mediaId);
 
 
 /**
@@ -126,11 +126,11 @@ $menuList = array(
     array('id'=>'10', 'pid'=>'7', 'name'=>'微信相册发图',       'type'=>'pic_weixin', 'code'=>'key_10'),
     array('id'=>'11', 'pid'=>'1', 'name'=>'发送位置',          'type'=>'location_select', 'code'=>'key_11'),
 );
-LaneWeChat\Core\Menu::setMenu($menuList);
+\LaneWeChat\Core\Menu::setMenu($menuList);
 //获取菜单
-LaneWeChat\Core\Menu::getMenu();
+\LaneWeChat\Core\Menu::getMenu();
 //删除菜单
-LaneWeChat\Core\Menu::delMenu();
+\LaneWeChat\Core\Menu::delMenu();
 
 
 /**
