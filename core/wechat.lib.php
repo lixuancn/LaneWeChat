@@ -85,7 +85,7 @@ class Wechat{
      * @return void
      */
     public function run() {
-        return WechatRequest::switchType($this->request, $this->xml);
+        return WechatRequest::switchType($this->request);
     }
 
     public function checkSignature()
