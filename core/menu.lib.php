@@ -53,7 +53,7 @@ class Menu{
                 $menuList[$key]['key'] = $menu['code'];
             }else if(@!empty($menu['type'])){
                 $menuList[$key]['key'] = $menu['code'];
-                if(!isset($menu['sub_button'])) $menuList[$key]['sub_button'] = [];
+                if(!isset($menu['sub_button'])) $menuList[$key]['sub_button'] = array();
             }
             unset($menuList[$key]['code']);
             //处理PID和ID
