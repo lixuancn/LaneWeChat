@@ -22,7 +22,7 @@ $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'�
 $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'图片URL2', 'url'=>'点击跳转URL2');
 //构建图文消息格式
 $itemList = array();
-foreach($tuwenList as $tuwen){
+foreach ($tuwenList as $tuwen) {
     $itemList[] = \LaneWeChat\Core\ResponseInitiative::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
 }
 \LaneWeChat\Core\ResponseInitiative::news($tousername, $itemList);
@@ -114,17 +114,17 @@ $code = $_GET['code'];
  */
 //设置菜单
 $menuList = array(
-    array('id'=>'1', 'pid'=>'',  'name'=>'常规',             'type'=>'', 'code'=>'key_1'),
-    array('id'=>'2', 'pid'=>'1',  'name'=>'点击',             'type'=>'click', 'code'=>'key_2'),
-    array('id'=>'3', 'pid'=>'1',  'name'=>'浏览',             'type'=>'view', 'code'=>'http://www.lanecn.com'),
-    array('id'=>'4', 'pid'=>'',  'name'=>'扫码',             'type'=>'', 'code'=>'key_4'),
-    array('id'=>'5', 'pid'=>'4', 'name'=>'扫码带提示',        'type'=>'scancode_waitmsg', 'code'=>'key_5'),
-    array('id'=>'6', 'pid'=>'4', 'name'=>'扫码推事件',        'type'=>'scancode_push', 'code'=>'key_6'),
-    array('id'=>'7', 'pid'=>'',  'name'=>'发图',             'type'=>'', 'code'=>'key_7'),
-    array('id'=>'8', 'pid'=>'7', 'name'=>'系统拍照发图',       'type'=>'pic_sysphoto', 'code'=>'key_8'),
-    array('id'=>'9', 'pid'=>'7', 'name'=>'拍照或者相册发图',    'type'=>'pic_photo_or_album', 'code'=>'key_9'),
-    array('id'=>'10', 'pid'=>'7', 'name'=>'微信相册发图',       'type'=>'pic_weixin', 'code'=>'key_10'),
-    array('id'=>'11', 'pid'=>'1', 'name'=>'发送位置',          'type'=>'location_select', 'code'=>'key_11'),
+    array('id'=>'1', 'pid'=>'',  'name'=>'常规', 'type'=>'', 'code'=>'key_1'),
+    array('id'=>'2', 'pid'=>'1',  'name'=>'点击', 'type'=>'click', 'code'=>'key_2'),
+    array('id'=>'3', 'pid'=>'1',  'name'=>'浏览', 'type'=>'view', 'code'=>'http://www.lanecn.com'),
+    array('id'=>'4', 'pid'=>'',  'name'=>'扫码', 'type'=>'', 'code'=>'key_4'),
+    array('id'=>'5', 'pid'=>'4', 'name'=>'扫码带提示', 'type'=>'scancode_waitmsg', 'code'=>'key_5'),
+    array('id'=>'6', 'pid'=>'4', 'name'=>'扫码推事件', 'type'=>'scancode_push', 'code'=>'key_6'),
+    array('id'=>'7', 'pid'=>'',  'name'=>'发图', 'type'=>'', 'code'=>'key_7'),
+    array('id'=>'8', 'pid'=>'7', 'name'=>'系统拍照发图', 'type'=>'pic_sysphoto', 'code'=>'key_8'),
+    array('id'=>'9', 'pid'=>'7', 'name'=>'拍照或者相册发图', 'type'=>'pic_photo_or_album', 'code'=>'key_9'),
+    array('id'=>'10', 'pid'=>'7', 'name'=>'微信相册发图', 'type'=>'pic_weixin', 'code'=>'key_10'),
+    array('id'=>'11', 'pid'=>'1', 'name'=>'发送位置', 'type'=>'location_select', 'code'=>'key_11'),
 );
 \LaneWeChat\Core\Menu::setMenu($menuList);
 //获取菜单
@@ -141,7 +141,7 @@ $menuList = array(
 $fansList = \LaneWeChat\Core\UserManage::getFansList();
 //上传图片
 $menuId = \LaneWeChat\Core\Media::upload('/var/www/baidu_jgylogo3.jpg', 'image');
-if(empty($menuId['media_id'])){
+if (empty($menuId['media_id'])) {
     die('error');
 }
 //上传图文消息
