@@ -46,9 +46,9 @@ class IntelligentInterface{
      */
     public static function voiceRecognition()
     {
-    	if ($request['MsgType'] === 'voice') {
-    		if (isset($request['Recognition']) && $request['Recognition']) {
-    			$recognition = $request['Recognition'];
+    	if ($request['msgtype'] === 'voice') {
+    		if (isset($request['recognition']) && $request['recognition']) {
+    			$recognition = $request['recognition'];
     			return $recognition;
     		} else {
     			return false;
