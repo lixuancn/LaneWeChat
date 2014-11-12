@@ -37,4 +37,20 @@ class IntelligentInterface{
         $template = json_encode($template);
         return Curl::callWebServer($queryUrl, $template, $queryAction, 0, 0);
     }
+
+    /**
+     * 语音识别
+     * 开通语音识别功能，用户每次发送语音给公众号时，微信会在推送的语音消息XML数据包中，增加一个Recongnition字段。
+     * @return $recognition String 语音识别结果，UTF8编码
+     * 《接口协议文档》：http://mp.weixin.qq.com/wiki/index.php?title=接收语音识别结果
+     */
+    public static function voiceRecognition()
+    {
+    	if ($request['MsgType'] === 'voice') {
+    		if (isset($request['Recognition']) && $request['Recognition']) {
+    			$recognition = $request['Recognition'];
+    			return $recognition;
+    		}
+    	}
+    }
 }
