@@ -29,7 +29,7 @@ class AccessToken{
      * @descrpition 从微信服务器获取微信ACCESS_TOKEN
      * @return Ambigous|bool
      */
-    private function _getAccessToken(){
+    private static function _getAccessToken(){
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
         $accessToken = Curl::callWebServer($url, '', 'GET');
         if(!isset($accessToken['access_token'])){
