@@ -88,7 +88,7 @@ class WeChatOAuth{
                 );
      */
     public static function getUserInfo($accessToken, $openId, $lang='zh_CN'){
-        $queryUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN';
+        $queryUrl = 'https://api.weixin.qq.com/sns/userinfo?access_token='. $accessToken . '&openid='. $openId .'&lang=zh_CN';
         $queryAction = 'GET';
         return Curl::callWebServer($queryUrl, '', $queryAction);
     }
