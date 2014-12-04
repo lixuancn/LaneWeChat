@@ -90,7 +90,7 @@ class UserManage{
      * @descrpition 获取用户基本信息
      * @param $openId 用户唯一OpenId
      * @return JSON {
-                    "subscribe": 1,
+                    "subscribe": 1,    //用户是否订阅该公众号标识，值为0时，代表此用户没有关注该公众号，拉取不到其余信息
                     "openid": "o6_bmjrPTlm6_2sgVt7hMZOPfL2M",
                     "nickname": "Band",
                     "sex": 1,          //用户的性别，值为1时是男性，值为2时是女性，值为0时是未知
