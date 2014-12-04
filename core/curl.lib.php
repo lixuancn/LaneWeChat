@@ -85,8 +85,10 @@ class Curl {
         curl_setopt(self::$_ch, CURLOPT_URL, $url);
         curl_setopt(self::$_ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt(self::$_ch, CURLOPT_HEADER, 0);
+        curl_setopt(self::$_ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt(self::$_ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt(self::$_ch, CURLOPT_SSLVERSION, 1);
-
+        
         $ret = self::_execute();
         self::_close();
         return $ret;  
@@ -120,7 +122,7 @@ class Curl {
         curl_setopt(self::$_ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt(self::$_ch, CURLOPT_SSLVERSION, 1);
 
-          
+
         $ret = self::_execute();
         self::_close();
         return $ret;  

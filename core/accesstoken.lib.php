@@ -10,9 +10,6 @@ namespace LaneWeChat\Core;
  * Website: http://www.lanecn.com
  */
 class AccessToken{
-    public static function test(){
-        echo 'hello world';
-    }
     /**
      * 获取微信Access_Token
      */

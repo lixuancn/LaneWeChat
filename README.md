@@ -156,11 +156,11 @@ Developer Blog：http://www.lanecn.com
 
     3、本框架的外部访问唯一入口为根目录下的wechat.php，本框架的内部调用唯一入口为根目录下的lanewechat.php。两者的区别是wechat.php是通过http://www.abc.com/lanewechat/wechat.php访问，是留给微信平台调用的入口。而lanewechat.php是我们项目内部调用时需要include 'lanewechat/lanewechat.php';
 
-    4、首次使用时，请打开根目录下的wechat.php，设置24行等于号后的false为true即可。
+    4、首次使用时，请打开根目录下的wechat.php，注释掉26行，并且打开注释第29行。
 
     5、在微信开发者-填写服务器配置页面，填写URL为http://www.lanecn.com/wechat.php，保证该URL可以通过80端口正常访问（微信服务器目前只支持80端口），并且将Token填写为config.php中的WECHAT_TOKEN常量的内容（可以修改）。
 
-    6、微信服务器在第4步验证通过后，反向操作第4步，即设置24行等于号后的true为false即可。至此，安装配置完成。
+    6、微信服务器在第4步验证通过后，反向操作第4步，即注释掉第27行，打开注释第26行。至此，安装配置完成。
 
 
 
