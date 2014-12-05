@@ -73,7 +73,7 @@ class Menu{
                         $menuList[$key]['sub_button'][$k]['key'] = $son['code'];
                     }else{
                         $menuList[$key]['sub_button'][$k]['key'] = $son['code'];
-                        $menuList[$key]['sub_button'][$k]['sub_button'] = [];
+                        $menuList[$key]['sub_button'][$k]['sub_button'] = array();
                     }
                     unset($menuList[$key]['sub_button'][$k]['code']);
                     //处理PID和ID
@@ -90,7 +90,7 @@ class Menu{
         $menuList = array_values($menuList);
         $data['button'] = $menuList;
         //转换成JSON
-        $data = json_encode($data, true);
+        $data = json_encode($data);
         $data = urldecode($data);
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();

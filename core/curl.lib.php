@@ -88,7 +88,7 @@ class Curl {
         curl_setopt(self::$_ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt(self::$_ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt(self::$_ch, CURLOPT_SSLVERSION, 1);
-        
+
         $ret = self::_execute();
         self::_close();
         return $ret;  

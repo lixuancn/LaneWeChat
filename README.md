@@ -21,6 +21,12 @@ Developer Blog：http://www.lanecn.com
 
 更新日志：
 
+    2014 1.4.2
+
+        1、解决CURL的GET调用在php5.3以下时出现errno=60(CA证书无效)的BUG。（解决人：大志<229417598@qq.com>）
+
+        2、文档、注视优化。（zhulin3141）
+
     2014-11-05：1.4版本
 
         兼容性：
