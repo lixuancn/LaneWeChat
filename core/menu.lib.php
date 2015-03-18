@@ -84,7 +84,6 @@ class Menu{
                 }
             }
         }
-
         //整理格式
         $data = array();
         $menuList = array_values($menuList);
