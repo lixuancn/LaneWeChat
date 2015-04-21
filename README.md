@@ -15,7 +15,7 @@
 
 
 
-Developer Blog：http://www.lanecn.com
+开发者博客：http://www.lanecn.com
 
 文档地址：<a href="http://lanewechat.lanecn.com/">http://lanewechat.lanecn.com/</a>
 
@@ -30,6 +30,10 @@ Developer Blog：http://www.lanecn.com
         2、新增接收消息类型：小视频
 
         3、新增 模板消息 - 设置行业 和 模板消息 - 获取模板ID
+
+        4、高级群发接口 - 根据分组群发 新增参数is_to_all，使用is_to_all为true且成功群发，会使得此次群发进入历史消息列表。
+
+        5、新增 高级群发接口 - 预览接口【订阅号与服务号认证后均可用】 和 高级群发接口 - 查询群发消息发送状态【订阅号与服务号认证后均可用】
 
     2014-12-04 1.4.2
 
