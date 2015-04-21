@@ -15,8 +15,8 @@ namespace LaneWeChat\Core;
 1、所有服务号都可以在功能->添加功能插件处看到申请模板消息功能的入口，但只有认证后的服务号才可以申请模板消息的使用权限并获得该权限；
 2、需要选择公众账号服务所处的2个行业，每月可更改1次所选行业；
 3、在所选择行业的模板库中选用已有的模板进行调用；
-4、每个账号可以同时使用10个模板。
-5、当前每个模板的日调用上限为10000次。
+4、每个账号可以同时使用15个模板。
+5、当前每个模板的日调用上限为100000次。
 
 关于接口文档，请注意：
 1、模板消息调用时主要需要模板ID和模板中各参数的赋值内容；
@@ -25,6 +25,37 @@ namespace LaneWeChat\Core;
  */
 
 class TemplateMessage{
+
+    /**
+     * 设置所属行业
+     * $industryId1 公众号模板消息所属行业编号 请打开连接查看行业编号 http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A
+     * $industryId2 公众号模板消息所属行业编号
+     */
+    public static function setIndustry($industryId1, $industryId2){
+        $queryUrl = 'https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'POST';
+        $template = array();
+        $template['industry_id1'] = "$industryId1";
+        $template['industry_id2'] = "$industryId2";
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
+    /**
+     * 获得模板ID
+     * $templateIdShort 模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
+     *
+     * @return array("errcode"=>0, "errmsg"=>"ok", "template_id":"Doclyl5uP7Aciu-qZ7mJNPtWkbkYnWBWVja26EGbNyk")  "errcode"是0则表示没有出错
+     */
+    public static function getTemplateId($templateIdShort){
+        $queryUrl = 'https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'POST';
+        $template = array();
+        $template['template_id_short'] = "$templateIdShort";
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
     /**
      * 向用户推送模板消息
      * @param $data = array(

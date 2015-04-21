@@ -106,6 +106,10 @@ class WechatRequest{
             case 'video':
                 $data = self::video($request);
                 break;
+            //小视频
+            case 'shortvideo':
+                $data = self::shortvideo($request);
+                break;
             //位置
             case 'location':
                 $data = self::location($request);
@@ -164,6 +168,16 @@ class WechatRequest{
      */
     public static function video(&$request){
         $content = '收到视频';
+        return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
+    }
+
+    /**
+     * @descrpition 视频
+     * @param $request
+     * @return array
+     */
+    public static function shortvideo(&$request){
+        $content = '收到小视频';
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -394,7 +408,7 @@ class WechatRequest{
         }else if($status == 'failed: system failed'){
             //其他原因发送失败
         }
-        return ;
+        return true;
     }
 
 
