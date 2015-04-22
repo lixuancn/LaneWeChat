@@ -10,6 +10,115 @@ namespace LaneWeChat\Core;
  */
 Class CustomService{
     /**
+     * 客服帐号管理 - 添加客服帐号
+     * 请注意，必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+     * 开发者可以通过本接口为公众号添加客服账号，每个公众号最多添加10个客服账号。
+     *
+     * @param $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+     * @param $nickname String 昵称
+     * @param $password String 密码
+     *
+     * @return array( "errcode" : 0, "errmsg" : "ok")
+     */
+    public function addAccount($kfAccount, $nickname, $password){
+        $queryUrl = 'https://api.weixin.qq.com/customservice/kfaccount/add?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'POST';
+        $template = array();
+        $template['kf_account'] = $kfAccount;
+        $template['nickname'] = $nickname;
+        $template['password'] = $password;
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
+    /**
+     * 客服帐号管理 - 修改客服帐号
+     * 请注意，必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+     *
+     * @param $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+     * @param $nickname String 昵称
+     * @param $password String 密码
+     *
+     * @return array( "errcode" : 0, "errmsg" : "ok")
+     */
+    public function editAccount($kfAccount, $nickname, $password){
+        $queryUrl = 'https://api.weixin.qq.com/customservice/kfaccount/update?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'POST';
+        $template = array();
+        $template['kf_account'] = $kfAccount;
+        $template['nickname'] = $nickname;
+        $template['password'] = $password;
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
+    /**
+     * 客服帐号管理 - 删除客服帐号
+     * 请注意，必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+     *
+     * @param $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+     * @param $nickname String 昵称
+     * @param $password String 密码
+     *
+     * @return array( "errcode" : 0, "errmsg" : "ok")
+     */
+    public function delAccount($kfAccount, $nickname, $password){
+        $queryUrl = 'https://api.weixin.qq.com/customservice/kfaccount/del?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'POST';
+        $template = array();
+        $template['kf_account'] = $kfAccount;
+        $template['nickname'] = $nickname;
+        $template['password'] = $password;
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
+    /**
+     * 客服帐号管理 - 获取所有客服账号
+     * 请注意，必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+     *
+     * @param $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+     * @param $nickname String 昵称
+     * @param $password String 密码
+     *
+     * @return array( "kf_list"=>array(
+           array("kf_account": "test1@test", "kf_nick": "ntest1", "kf_id": "1001", "kf_headimgurl": " http://mmbiz.qpic.cn/mmbiz/4whpV1VZl2iccsvYbHvnphkyGtnvjfUS8Ym0GSaLic0FD3vN0V8PILcibEGb2fPfEOmw/0"),
+     * ))
+     */
+    public function getAccountList($kfAccount, $nickname, $password){
+        $queryUrl = 'https://api.weixin.qq.com/cgi-bin/customservice/getkflist?access_token='.AccessToken::getAccessToken();
+        $queryAction = 'GET';
+        $template = array();
+        $template['kf_account'] = $kfAccount;
+        $template['nickname'] = $nickname;
+        $template['password'] = $password;
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
+    }
+
+    /**
+     * 客服帐号管理 - 设置客服帐号的头像
+     * 请注意，必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+     *
+     * 可调用本接口来上传图片作为客服人员的头像，头像图片文件必须是jpg格式，推荐使用640*640大小的图片以达到最佳效果
+     *
+     * @param $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+     * @param $imagePath String 待上传的头像文件路径
+     *
+     * @return array( "errcode" : 0, "errmsg" : "ok")
+     */
+    public function setAccountImage($kfAccount, $imagePath){
+        if(!file_exists($imagePath)){
+            return false;
+        }
+        //获取ACCESS_TOKEN
+        $queryUrl = 'http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg?access_token='.AccessToken::getAccessToken().'&kf_account='.$kfAccount;
+        $data = array();
+        $data['media'] = '@'.$imagePath;
+        return Curl::callWebServer($queryUrl, $data, 'POST', 1 , 0);
+    }
+
+    /**
      * 获取客服聊天记录接口，有分页，一次获取一页，一页最多1000条
      * 在需要时，开发者可以通过获取客服聊天记录接口，获取多客服的会话记录，包括客服和用户会话的所有消息记录和会话的创建、关闭等操作记录。利用此接口可以开发如“消息记录”、“工作监控”、“客服绩效考核”等功能
      *
