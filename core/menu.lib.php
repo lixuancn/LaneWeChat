@@ -50,7 +50,8 @@ class Menu{
                 //处理URL。因为URL不能在转换JSON时被转为UNICODE
                 $menuList[$key]['url'] = urlencode($menuList[$key]['url']);
             }else if(@$menu['type'] == 'click'){
-                $menuList[$key]['key'] = $menu['code'];
+                //处理Code。因为，有时关键字是汉字
+                $menuList[$key]['key'] = urlencode($menu['code']);
             }else if(@!empty($menu['type'])){
                 $menuList[$key]['key'] = $menu['code'];
                 if(!isset($menu['sub_button'])) $menuList[$key]['sub_button'] = array();
@@ -70,7 +71,8 @@ class Menu{
                         $menuList[$key]['sub_button'][$k]['url'] = $son['code'];
                         $menuList[$key]['sub_button'][$k]['url'] = urlencode($menuList[$key]['sub_button'][$k]['url']);
                     }else if($son['type'] == 'click'){
-                        $menuList[$key]['sub_button'][$k]['key'] = $son['code'];
+                        //处理Code。因为，有时关键字是汉字
+                        $menuList[$key]['sub_button'][$k]['key'] = urlencode($son['code']);
                     }else{
                         $menuList[$key]['sub_button'][$k]['key'] = $son['code'];
                         $menuList[$key]['sub_button'][$k]['sub_button'] = array();
