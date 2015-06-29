@@ -156,8 +156,8 @@ class ResponseInitiative{
         return $template = array(
             'title'=>$title,
             'description'=>$description,
-            'url'=>$picUrl,
-            'picurl'=>$url,
+            'url'=>$url,
+            'picurl'=>$picUrl,
         );
     }
 
