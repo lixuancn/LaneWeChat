@@ -24,12 +24,10 @@ class Autoloader{
     public static function autoload($className){
         $namespacePrefixStrlen = strlen(self::NAMESPACE_PREFIX);
         if(strncmp(self::NAMESPACE_PREFIX, $className, $namespacePrefixStrlen) === 0){
-            echo "\n".$className;
             $className = strtolower($className);
             $filePath = str_replace('\\', DIRECTORY_SEPARATOR, substr($className, $namespacePrefixStrlen));
             $filePath = realpath(__DIR__ . 'core' . DIRECTORY_SEPARATOR . $filePath . '.lib.php');
             if(file_exists($filePath)){
-                echo "\n".$filePath;
                 require_once $filePath;
             }else{
                 echo $filePath;
