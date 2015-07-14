@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core\Aes;
 include_once "wxBizMsgCrypt.php";
 
 // 第三方发送消息给公众平台

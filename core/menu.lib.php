@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core;
 /**
  * 自定义菜单
  * Created by PhpStorm.

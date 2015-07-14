@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core\Aes;
 
 /**
  * PKCS7Encoder class

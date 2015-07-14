@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core;
 /**
  * 微信公众平台来来路认证，处理中心，消息分发
  * Created by Lane.
@@ -34,7 +33,8 @@ class Wechat{
             return $_GET['echostr'];
         }
         //是否打印错误报告
-        $this->debug = $debug;
+        // $this->debug = $debug;
+        $this->debug = true;
         //接受并解析微信中心POST发送XML数据
         $xml = (array) simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA);
 

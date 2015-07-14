@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat;
 /**
  *
  * 自动载入函数
@@ -11,7 +10,7 @@ namespace LaneWeChat;
  * WebSite: http://www.lanecn.com
  */
 class Autoloader{
-    const NAMESPACE_PREFIX = 'LaneWeChat\\';
+    const NAMESPACE_PREFIX = '';
     /**
      * 向PHP注册在自动载入函数
      */
@@ -25,10 +24,12 @@ class Autoloader{
     public static function autoload($className){
         $namespacePrefixStrlen = strlen(self::NAMESPACE_PREFIX);
         if(strncmp(self::NAMESPACE_PREFIX, $className, $namespacePrefixStrlen) === 0){
+            echo "\n".$className;
             $className = strtolower($className);
             $filePath = str_replace('\\', DIRECTORY_SEPARATOR, substr($className, $namespacePrefixStrlen));
-            $filePath = realpath(__DIR__ . (empty($filePath) ? '' : DIRECTORY_SEPARATOR) . $filePath . '.lib.php');
+            $filePath = realpath(__DIR__ . 'core' . DIRECTORY_SEPARATOR . $filePath . '.lib.php');
             if(file_exists($filePath)){
+                echo "\n".$filePath;
                 require_once $filePath;
             }else{
                 echo $filePath;

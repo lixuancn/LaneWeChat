@@ -4,11 +4,18 @@
 
 开发语言：PHP
 
-版本要求：原则PHP5.3以上
+版本要求：PHP5.2
 
-版本规避：若版本低于PHP5.3，则删除本框架所有页面开头“namespace”的行、删除本框架中所有的“use LaneWeChat”开头的行，删除“LaneWeChat\Core”，修改Autoloader::NAMESPACE_PREFIX=''，修改curl.lib.php的\Exception为Exception即可。
-
-命名空间：本框架的命名空间均为LaneWeChat开头。
+版本规避：
+    根据主版本做以下修改：
+        删除框架所有页面开头“namespace”的行;
+        删除本框架中所有的“use LaneWeChat”开头的行;
+        删除“LaneWeChat\Core”;
+        修改Autoloader::NAMESPACE_PREFIX='';
+        修改curl.lib.php的\Exception为Exception;
+        定义__DIR__常量(该常量是php5.3开始增加的);
+        修改Autoloader类中的autoload方法;
+        注释WechatRequest类中的test方法(应该该方法使用了命名空间Aes\WXBizMsgCrypt);
 
 开源协议：Do What The Fuck You Want To Public License
 

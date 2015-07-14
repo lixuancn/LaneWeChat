@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core;
 /**
  *
  * 错误提示类

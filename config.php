@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat;
 /**
  * 系统主配置文件.
  * @Created by Lane.
@@ -16,15 +15,15 @@ define('LANEWECHAT_VERSION_DATE', '2014-11-05');
 /*
  * 服务器配置，详情请参考@link http://mp.weixin.qq.com/wiki/index.php?title=接入指南
  */
-define("WECHAT_URL", 'http://www.lanecn.com');
-define('WECHAT_TOKEN', 'weixin');
+define("WECHAT_URL", 'http://www.loveinin.com/LaneWeChat/wechat.php');
+define('WECHAT_TOKEN', 'weixintest');
 define('ENCODING_AES_KEY', "MqAuKoex6FyT5No0OcpRyCicThGs0P1vz4mJ2gwvvkF");
 
 /*
  * 开发者配置
  */
-define("WECHAT_APPID", 'wx5d57f64bb4804d90');
-define("WECHAT_APPSECRET", '4b1fa6d9442351ec9268eff05e38f521');
+define("WECHAT_APPID", 'wx94a3e27fe7ef0baf');
+define("WECHAT_APPSECRET", 'ca9551d488125ac866f86a88ba0f1706');
 
 
 ////-----引入系统所需类库-------------------

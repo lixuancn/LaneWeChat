@@ -1,6 +1,4 @@
 <?php
-namespace LaneWeChat\Core\Aes;
-
 /**
  * SHA1 class
  *

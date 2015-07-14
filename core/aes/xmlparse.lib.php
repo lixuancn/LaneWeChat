@@ -1,6 +1,4 @@
 <?php
-namespace LaneWeChat\Core\Aes;
-
 /**
  * XMLParse class
  *
