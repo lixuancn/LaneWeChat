@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core;
 /**
  * 微信OAuth2.0获取认证
  * Created by lane.

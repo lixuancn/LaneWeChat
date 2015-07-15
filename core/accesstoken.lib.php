@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core;
 /**
  * 微信Access_Token的获取与过期检查
  * Created by Lane.

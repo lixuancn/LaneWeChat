@@ -1,5 +1,4 @@
 <?php
-namespace LaneWeChat\Core\Aes;
 /**
  * error code 说明.
  * <ul>
