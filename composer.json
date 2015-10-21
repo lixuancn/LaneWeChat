@@ -1,5 +1,5 @@
 {
-    "name": "lixuancn/LaneWeChat",
+    "name": "lixuancn/Lanewechat",
     "type": "library",
     "description": "LaneWeChat is WeChat development package for PHP",
     "keywords": ["LaneWeChat","WeChat","PHP"],
@@ -8,7 +8,7 @@
     "versions": "1.5.2",
     "authors": [
         {
-            "name": "Lane",
+            "name": "Lane/lixuancn",
             "email": "lixuan868686@163.com",
             "homepage": "http://www.lanecn.com",
             "role": "PHP Developer"
