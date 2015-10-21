@@ -114,7 +114,7 @@ Class CustomService{
         //获取ACCESS_TOKEN
         $queryUrl = 'http://api.weixin.qq.com/customservice/kfaccount/uploadheadimg?access_token='.AccessToken::getAccessToken().'&kf_account='.$kfAccount;
         $data = array();
-        $data['media'] = '@'.$imagePath;
+        $data['media'] = Curl::addFile($imagePath);
         return Curl::callWebServer($queryUrl, $data, 'POST', 1 , 0);
     }
 

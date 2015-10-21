@@ -28,7 +28,7 @@ class Media{
         $accessToken = AccessToken::getAccessToken();
         $queryUrl = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token='.$accessToken.'&type='.$type;
         $data = array();
-        $data['media'] = '@'.$filename;
+        $data['media'] = Curl::addFile($filename);
         return Curl::callWebServer($queryUrl, $data, 'POST', 1 , 0);
     }
 

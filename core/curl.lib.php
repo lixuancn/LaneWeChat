@@ -155,6 +155,16 @@ class Curl {
 		}
 		return  $response;
 	}
+
+    /**
+     * 上传文件
+     * @param $filename 文件名+路径
+     * @return \CURLFile|string 返回可直接用于Curl发送的模式
+     * PHP5.5以后，将废弃以@文件名的方式上传文件。
+     */
+    public static function addFile($filename){
+        return class_exists('\CURLFile') ? new \CURLFile($filename) : '@'.$filename;
+    }
 }
 
 ?>
