@@ -1,0 +1,20 @@
+{
+    "name": "lixuancn/LaneWeChat",
+    "type": "library",
+    "description": "LaneWeChat is WeChat development package for PHP",
+    "keywords": ["LaneWeChat","WeChat","PHP"],
+    "homepage": "http://lanewechat.lanecn.com",
+    "license": "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
+    "versions": "1.5.2",
+    "authors": [
+        {
+            "name": "Lane",
+            "email": "lixuan868686@163.com",
+            "homepage": "http://www.lanecn.com",
+            "role": "PHP Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
