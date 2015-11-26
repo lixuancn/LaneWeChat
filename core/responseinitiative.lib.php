@@ -24,7 +24,6 @@ class ResponseInitiative{
     public static function text($tousername, $content){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -36,7 +35,7 @@ class ResponseInitiative{
         );
         $template = json_encode($template);
 
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
     /**
@@ -48,7 +47,6 @@ class ResponseInitiative{
     public static function image($tousername, $mediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -59,7 +57,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
     /**
@@ -71,7 +69,6 @@ class ResponseInitiative{
     public static function voice($tousername, $mediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -82,7 +79,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
     /**
@@ -96,7 +93,6 @@ class ResponseInitiative{
     public static function video($tousername, $mediaId, $title, $description){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -109,7 +105,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
     /**
@@ -125,7 +121,6 @@ class ResponseInitiative{
     public static function music($tousername, $title, $description, $musicUrl, $hqMusicUrl, $thumbMediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -140,7 +135,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
     /**
@@ -170,7 +165,6 @@ class ResponseInitiative{
     public static function news($tousername, $item){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
 
         //开始
         $template = array(
@@ -181,7 +175,7 @@ class ResponseInitiative{
             ),
         );
         $template = json_encode($template);
-        return Curl::callWebServer(self::$queryUrl, $template, self::$action);
+        return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
 
 
