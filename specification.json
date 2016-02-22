@@ -1,0 +1,24 @@
+{
+  "author":"文档作者",
+  "date":"创建时间",
+  "_comment":"说明",
+  "text":"收到文本消息的回复",
+  "image":"收到图片的回复",
+  "voice":{
+    "no_recognition":"收到语音（不识别）",
+    "recognition":"收到语音识别消息（识别消息）"
+  },
+  "video":"收到视频的回复",
+  "shortvideo":"收到小视频的回复",
+  "location":"收到上报的地理位置的回复",
+  "link":"收到链接的回复",
+  "event":{
+    "Subscribe":"关注事件",
+    "Unsubscribe":"取消关注事件",
+    "QrsceneSubscribe":"扫描二维码关注事件（未关注时）",
+    "Scan":"扫描二维码事件（已关注时）",
+    "Location":"上报地理位置事件",
+    "Click":"自定义菜单 - 点击菜单拉取消息时的事件推送"
+  }
+}
+
