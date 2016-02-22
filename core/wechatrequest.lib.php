@@ -10,6 +10,14 @@ namespace LaneWeChat\Core;
  * Website: http://www.lanecn.com
  */
 
+$fileString = file_get_contents('message.zh-cn.json');
+if($fileString == False)
+{
+    echo 'Open message.json file failed!';
+}
+$msgArray = json_decode($fileString, true);
+
+
 class WechatRequest{
     /**
      * @descrpition 分发请求
@@ -132,7 +140,7 @@ class WechatRequest{
      * @return array
      */
     public static function text(&$request){
-        $content = '收到文本消息';
+        $content = $msgArray[text];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -142,7 +150,7 @@ class WechatRequest{
      * @return array
      */
     public static function image(&$request){
-        $content = '收到图片';
+        $content = $msgArray[image];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -153,10 +161,10 @@ class WechatRequest{
      */
     public static function voice(&$request){
         if(!isset($request['recognition'])){
-            $content = '收到语音';
+            $content = $msgArray[voice][norecognition];
             return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
         }else{
-            $content = '收到语音识别消息，语音识别结果为：'.$request['recognition'];
+            $content = $msgArray[voice][recognition] . '"'. $request['recognition'] . '"';
             return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
         }
     }
@@ -167,7 +175,7 @@ class WechatRequest{
      * @return array
      */
     public static function video(&$request){
-        $content = '收到视频';
+        $content = $msgArray[video];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -177,7 +185,7 @@ class WechatRequest{
      * @return array
      */
     public static function shortvideo(&$request){
-        $content = '收到小视频';
+        $content = $msgArray[shortvideo];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -187,7 +195,7 @@ class WechatRequest{
      * @return array
      */
     public static function location(&$request){
-        $content = '收到上报的地理位置';
+        $content = $msgArray[location];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -197,7 +205,7 @@ class WechatRequest{
      * @return array
      */
     public static function link(&$request){
-        $content = '收到连接';
+        $content = $msgArray[link];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -207,7 +215,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventSubscribe(&$request){
-        $content = '欢迎您关注我们的微信，将为您竭诚服务';
+        $content = $msgArray[event][Subscribe];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -217,7 +225,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventUnsubscribe(&$request){
-        $content = '为什么不理我了？';
+        $content =  $msgArray[event][Unsubscribe];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -227,7 +235,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventQrsceneSubscribe(&$request){
-        $content = '欢迎您关注我们的微信，将为您竭诚服务';
+        $content =  $msgArray[event][QrsceneSubscribe];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -237,7 +245,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventScan(&$request){
-        $content = '您已经关注了哦～';
+        $content =  $msgArray[event][Scan];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -247,7 +255,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventLocation(&$request){
-        $content = '收到上报的地理位置';
+        $content =  $msgArray[event][Location];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -259,7 +267,7 @@ class WechatRequest{
     public static function eventClick(&$request){
 		//获取该分类的信息
         $eventKey = $request['eventkey'];
-        $content = '收到点击菜单事件，您设置的key是' . $eventKey;
+        $content =  $msgArray[event][Click] . $eventKey;
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -271,7 +279,7 @@ class WechatRequest{
     public static function eventView(&$request){
         //获取该分类的信息
         $eventKey = $request['eventkey'];
-        $content = '收到跳转链接事件，您设置的key是' . $eventKey;
+        $content =  $msgArray[event][View] . $eventKey;
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 

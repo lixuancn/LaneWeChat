@@ -1,0 +1,24 @@
+{
+  "author":"cck",
+  "date":"20160222",
+  "_comment":"微信请求消息的回复",
+  "text":"收到文本消息",
+  "image":"收到图片",
+  "voice":{
+    "no_recognition":"收到语音",
+    "recognition":"收到语音识别消息，语音识别结果为："
+  },
+  "video":"收到视频",
+  "shortvideo":"收到小视频",
+  "location":"收到上报的地理位置",
+  "link":"收到链接",
+  "event":{
+    "Subscribe":"欢迎您关注我们的微信，将为您竭诚服务",
+    "Unsubscribe":"为什么不理我了？",
+    "QrsceneSubscribe":"欢迎您关注我们的微信，将为您竭诚服务",
+    "Scan":"您已经关注了哦～",
+    "Location":"收到上报的地理位置",
+    "Click":"收到点击菜单事件，您设置的key是"
+  }
+}
+
