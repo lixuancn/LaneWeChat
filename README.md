@@ -6,36 +6,47 @@
 
 版本要求：原则PHP5.3以上
 
-版本规避：若版本低于PHP5.3，则删除本框架所有页面开头“namespace”的行、删除本框架中所有的“use LaneWeChat”开头的行，删除“LaneWeChat\Core”即可。
+版本规避：若版本低于PHP5.3，则删除本框架所有页面开头“namespace”的行、删除本框架中所有的“use LaneWeChat”开头的行，删除“LaneWeChat\Core”，修改Autoloader::NAMESPACE_PREFIX=''，修改curl.lib.php的\Exception为Exception即可。
 
 命名空间：本框架的命名空间均为LaneWeChat开头。
 
 开源协议：Do What The Fuck You Want To Public License
 
-
-
-
-Developer Blog：http://www.lanecn.com
+开发者博客：http://www.lanecn.com
 
 文档地址：<a href="http://lanewechat.lanecn.com/">http://lanewechat.lanecn.com/</a>
 
-
-
 更新日志：
 
-    2015-04-21 1.6
+    2015-10-21 1.5.3
+
+        1、文件上传根据PHP版本增加了CURLFile()类。自PHP5.5以后，废弃了“@文件名”的方式上传文件
+
+    2015-06-29 1.5.2
+
+        1、在主动发消息模块（responseinitiative.lib.php）pic_url 和 url赋值反了。
+
+    2015-04-29 1.5.1
 
         1、新增获取微信服务器IP列表接口。如果需要安全性校验，可以每次判断请求的来源IP。
 
         2、新增接收消息类型：小视频
 
-        3、新增 模板消息 - 设置行业 和 模板消息 - 获取模板ID
+        3、新增 模板消息-设置行业 和 模板消息-获取模板ID
+
+        4、高级群发接口-根据分组群发 新增参数is_to_all，使用is_to_all为true且成功群发，会使得此次群发进入历史消息列表。
+
+        5、新增 高级群发接口-预览接口【订阅号与服务号认证后均可用】 和 高级群发接口-查询群发消息发送状态【订阅号与服务号认证后均可用】
+
+        6、新增 客服帐号管理-获取所有客服账号列表/添加客服账号/修改客服账号/删除客服账号/设置客服头像
+
+        7、新增 自动回复-获取自动回复 接口
 
     2014-12-04 1.4.2
 
         1、解决CURL的GET调用在php5.3以下时出现errno=60(CA证书无效)的BUG。（解决人：大志<229417598@qq.com>）
 
-        2、文档、注视优化。（zhulin3141）
+        2、文档、注释优化。（zhulin3141）
 
         3、实战演练 - 添加微信自定义菜单 文档场景描述错误
 
@@ -114,13 +125,11 @@ Developer Blog：http://www.lanecn.com
             在绑定了公众号后，我们根据openId获取用户信息的时候，会新增一个字段“unionid”，只要是同一个用户，在不同的公众号用不同的openId获取用户信息的时候unionid是相同的。
             此功能不需要新增/修改代码，只需要在微信开放平台绑定公众号就可以了。仍旧使用获取用户信息接口UserManage::getUserInfo($openId);
 
-
     2014-10-14：1.2.2版本。新增自动载入函数
 
     2014-08-17：1.2版本。新增自定义菜单功能、新增多媒体上传下载功能。
 
     2014-08-07：1.0版本
-
 
 文档目录：
 
@@ -138,7 +147,6 @@ Developer Blog：http://www.lanecn.com
 
     7、实例示范。
 
-
 常识普及：
 
 一、微信公众账号分两种，一种是订阅号，一种是服务号。
@@ -151,8 +159,6 @@ Developer Blog：http://www.lanecn.com
 
     4、订阅号被认证后也享用自定义菜单等功能，仍旧是300元/每年
 
-
-
 二、专业术语：
 
     1、OpenId：微信服务器并不会告诉公众号用户的微信ID，即使是你的关注者也不行，为了解决开发中唯一标识的问题，微信使用了OpenId，所谓的OpenId，就是用户和微信公众号之间的一种唯一关系。一个用户在一个公众号面前，享用唯一的OpenId，不会和别人重复。换言之，同一个用户在另一个公众号面前，是拥有另一个OpenId的。再直白些就是$openId = md5('用户微信ID+公众号ID')
@@ -160,7 +166,6 @@ Developer Blog：http://www.lanecn.com
     2、Access_Token：此项只有认证号的功能才会使用的到，Access_token是一个授权标识，即一个授权验证码，一个标识10分钟内有效，10分钟的有效期内公众号的多个关注者可以使用同一个Access_Token。在使用主动给指定用户发送消息、自定义菜单、用户管理和用户组管理等功能的时候，每次操作需要给微信服务器以参数的形式附带Access_token。
 
     3、Access_Token网页版：本Access_Token网页版授权时会使用到，和2中的Access_Toekn是不同的东西，不过使用我们的LaneWeChat微信快速开发框架是不需要了解这些的。Access_Token网页版是说在用户打开你的公众号提供的网页的时候，你的网页需要获取用户的OpenId、昵称、头像等信息的时候授权用的。同时，本Access_Token网页版有两种用法，一种是打开网页后弹出一个授权框，让用户点击是否授权，界面像主流的开放平台授权界面（比如QQ登陆某网站，支付宝账号登陆某网站等）；另一种是不需要弹出授权框仍旧可以获取用户信息，用法可以在实例中看到。
-
 
 如何安装：
 
@@ -180,17 +185,11 @@ Developer Blog：http://www.lanecn.com
 
     6、微信服务器在第4步验证通过后，反向操作第4步，即注释掉第27行，打开注释第26行。至此，安装配置完成。
 
-
-
-
 初出茅庐：
 
     1、给你的微信公众号发送一条文本消息，比如hello world或者其他什么的。这个时候你应该会收到一条“收到文本”的服务器反馈的被动响应的消息。
 
     2、这个时候你需要先为自己鼓掌。
-
-
-
 
 流程分析：
 
@@ -212,7 +211,6 @@ Developer Blog：http://www.lanecn.com
 
     9、流程结束，这就是发送“hello world”，然后返回给用户“收到文本”。
 
-
 牛刀小试：
 
     1、打开core/wechatrequest.php文件，讲方法text()中的变量修改为$content = '收到文本消息'.$request['content'];
@@ -220,9 +218,6 @@ Developer Blog：http://www.lanecn.com
     2、保存并且上传到你的服务器。
 
     3、在微信中打开你的公众号，输入文本消息“hello world”。见证奇迹的时刻到了。这个时候你的手机微信客户端中现实的是“收到文本消息hello world”。
-
-
-
 
 函数详解：
 
@@ -239,51 +234,32 @@ Developer Blog：http://www.lanecn.com
                  $mediaId = "通过上传多媒体文件，得到的id。";
 
         4、发送文本
-
                 ResponsePassive::text($fromusername, $tousername, '文本消息内容');
 
         5、发送图片
-
                 ResponsePassive::image($fromusername, $tousername, $mediaId);
 
         6、发送语音
-
                 ResponsePassive::voice($fromusername, $tousername, $mediaId);
 
         7、发送视频
-
                 ResponsePassive::video($fromusername, $tousername, $mediaId, '视频标题', '视频描述');
 
         8、发送音乐
-
                 ResponsePassive::music($fromusername, $tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
 
         9、发送图文
-
             1）创建图文消息内容
-
                 $tuwenList = array();
-
                 $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
-
                 $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'图片URL2', 'url'=>'点击跳转URL2');
-
             2）构建图文消息格式
-
                 $itemList = array();
-
                 foreach($tuwenList as $tuwen){
-
                     $itemList[] = ResponsePassive::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
-
                 }
-
             3）发送图文消息
-
                 ResponsePassive::news($fromusername, $tousername, $itemList);
-
-
-
 
     二、AccessToken授权。
 
@@ -294,7 +270,6 @@ Developer Blog：http://www.lanecn.com
         3、参数：无
 
         4、获取AccessToken
-
             AccessToken::getAccessToken(); 该调用会返回微信服务器散列后的AccessToken字符串。
 
         5、温馨提示
@@ -302,25 +277,14 @@ Developer Blog：http://www.lanecn.com
             如果暂且用不到此功能，请跳过。最后来看这里！
 
         6、功能补充
-
             有一个地方需要用户自行完善，根据介绍我们已经知道了，获取AccessToken只有10分钟的有效期，过期需要重新获取。因此，我们需要存储这个AccessToken。
-
             由于大家的存储方式各不相同，有Mysql的，有Redis的，有MongoDB的，还有Session的。所以这里我讲存储和读取给留空了。
-
             流程：AccessToken类，public方法只有一个，就是getAccessToken()。这个方法会调用一个私有方法_checkAccessToken()来检测AccessToken是否存在并且是否过期，如果不存在或过期，则调用私有方法_getAccessToken()
-
             完善步骤：
-
             1）、打开core/accesstoken.lib.php文件。
-
             2）、私有方法_getAccessToken()的倒数第二行（return是倒数第一行），在这个地方，请讲变量$accessTokenJson存储起来，变量$accessTokenJson是一个字符串。
-
             3）、私有方法_checkAccessToken()的第一行就是读取操作（有一行伪代码$accessToken = YourDatabase::get('access_token');），将刚才第二步的存储的东西给读出来，并且赋值给$accessToken。
-
             4）、在第二步的存储，第三部的读取的时候，请不要修改数据，仅仅完善一个读和存的操作就可以了。
-
-
-
 
     三、主动给用户发送消息。
 
@@ -328,56 +292,36 @@ Developer Blog：http://www.lanecn.com
 
         2、使用命名空间：use LaneWeChat\Core\ResponsePassive;
 
-        3、参数  $tousername = "你的公众号Id";                 在变量$require['tousername']中
-
+        3、参数  $tousername = "你的公众号Id";  在变量$require['tousername']中
                 $mediaId = "通过上传多媒体文件，得到的id。";
 
         4、发送文本内容
-
-        ResponseInitiative::text($tousername, '文本消息内容');
+            ResponseInitiative::text($tousername, '文本消息内容');
 
         5、发送图片
-
-        ResponseInitiative::image($tousername, $mediaId);
+            ResponseInitiative::image($tousername, $mediaId);
 
         6、发送语音
-
-        ResponseInitiative::voice($tousername, $mediaId);
+            ResponseInitiative::voice($tousername, $mediaId);
 
         7、发送视频
-
-        ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
+            ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
 
         8、发送地理位置
-
-        ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+            ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
 
         9、发送图文消息
-
             1）创建图文消息内容
-
                 $tuwenList = array();
-
                 $tuwenList[] = array('title'=>'标题1', 'description'=>'描述1', 'pic_url'=>'图片URL1', 'url'=>'点击跳转URL1');
-
                 $tuwenList[] = array('title'=>'标题2', 'description'=>'描述2', 'pic_url'=>'图片URL2', 'url'=>'点击跳转URL2');
-
             2）构建图文消息格式
-
                 $itemList = array();
-
                 foreach($tuwenList as $tuwen){
-
                     $itemList[] = ResponseInitiative::newsItem($tuwen['title'], $tuwen['description'], $tuwen['pic_url'], $tuwen['url']);
-
                 }
-
             3）发送图文消息
-
                 ResponseInitiative::news($tousername, $itemList);
-
-
-
 
     四、用户及用户组管理。
 
@@ -385,64 +329,44 @@ Developer Blog：http://www.lanecn.com
 
         2、使用命名空间：use LaneWeChat\Core\UserManage;
 
-        3、参数  $openId = '用户和微信公众号的唯一ID';           在变量$require['openid']中
-
+        3、参数  $openId = '用户和微信公众号的唯一ID';    在变量$require['openid']中
                 $mediaId = "通过上传多媒体文件，得到的id。";
-
-                $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
+                $groupId = '分组ID';    在添加新分组、获取分组列表的时候可以得到
 
         4、分组管理 - 创建分组
-
             UserManage::createGroup('分组名');
 
-        5、分组管理 - //获取分组列表
-
+        5、分组管理 - 获取分组列表
             UserManage::getGroupList();
 
         6、分组管理 - 查询用户所在分组
-
             UserManage::getGroupByOpenId($openId);
 
         7、分组管理 - 修改分组名
-
             UserManage::editGroupName($groupId, '新的组名');
 
         8、分组管理 - 移动用户分组
-
             UserManage::editUserGroup($openId, $groupId);
 
         9、用户管理 - 获取用户基本信息
-
             UserManage::getUserInfo($openId);
 
         10、用户管理 - 获取关注者列表
-
             UserManage::getFansList($next_openId='');
 
         11、用户管理 - 获取网络状态
-
             UserManage::getNetworkState();
 
         12、设置备注名 开发者可以通过该接口对指定用户设置备注名，该接口暂时开放给微信认证的服务号。
-
             UserManage::setRemark($openId, $remark);
-
             $openId：用户的openId
-
             $remark：新的昵称
 
         13、关于获取用户信息的新亮点 - unionId：
-
             获取用户信息是根据openId获取，同一个微信用户对于不同的公众号，是不同的openId。那问题就来了，如果你有多个公众号，想要共享一份用户数据，可是同一个用户在不同的公众号是不同的openId，我们无法判断是否是同一个用户，现在微信引入了UnionId的概念。
-
             如果开发者有在多个公众号，或在公众号、移动应用之间统一用户帐号的需求，需要前往微信开放平台（open.weixin.qq.com）绑定公众号后，才可利用UnionID机制来满足上述需求。
-
             在绑定了公众号后，我们根据openId获取用户信息的时候，会新增一个字段“unionid”，只要是同一个用户，在不同的公众号用不同的openId获取用户信息的时候unionid是相同的。
-
             此功能不需要新增/修改代码，只需要在微信开放平台绑定公众号就可以了。仍旧使用获取用户信息接口UserManage::getUserInfo($openId);
-
-
-
 
     五、网页授权。
 
@@ -451,88 +375,55 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\WeChatOAuth;
 
         3、参数  $openId = '用户和微信公众号的唯一ID';           在变量$require['openid']中
-
                 $mediaId = "通过上传多媒体文件，得到的id。";
-
                 $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
 
         4、获取CODE。
-
             参数：$scope：snsapi_base不弹出授权页面，只能获得OpenId;snsapi_userinfo弹出授权页面，可以获得所有信息
-
             参数：$redirect_uri：将会跳转到redirect_uri/?code=CODE&state=STATE 通过GET方式获取code和state。获取CODE时，发送请求和参数给微信服务器，微信服务器会处理后将跳转到本参数指定的URL页面
-
             WeChatOAuth::getCode($redirect_uri, $state=1, $scope='snsapi_base');
 
         5、通过code换取网页授权access_token（access_token网页版）。首先请注意，这里通过code换取的网页授权access_token,与基础支持中的access_token不同。公众号可通过下述接口来获取网页授权access_token。如果网页授权的作用域为snsapi_base，则本步骤中获取到网页授权access_token的同时，也获取到了openid，snsapi_base式的网页授权流程即到此为止。
-
             参数：$code getCode()获取的code参数。$code = $_GET['code'];
-
             WeChatOAuth::getAccessTokenAndOpenId($code);
 
         6、刷新access_token（如果需要）
-
             由于access_token拥有较短的有效期，当access_token超时后，可以使用refresh_token进行刷新，refresh_token拥有较长的有效期（7天、30天、60天、90天），当refresh_token失效的后，需要用户重新授权。
-
             WeChatOAuth::refreshToken($refreshToken);
-
                 $refreshToken：通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是refresh_token，就是这里的参数
 
         7、拉取用户信息(需scope为 snsapi_userinfo)
-
             如果网页授权作用域为snsapi_userinfo，则此时开发者可以通过access_token和openid拉取用户信息了。
-
             WeChatOAuth::getUserInfo($accessToken, $openId, $lang='zh_CN');
-
                 $accessToken:网页授权接口调用凭证。通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是access_token，就是这里的参数。注意：此access_token与基础支持的access_token不同。
-
                 $openId:用户的唯一标识
-
                 $lang:返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
 
         8、检验授权凭证（access_token）是否有效
-
             WeChatOAuth::checkAccessToken($accessToken, $openId){
-
                 $accessToken：网页授权接口调用凭证。通过本类的第二个方法getAccessTokenAndOpenId可以获得一个数组，数组中有一个字段是access_token，就是这里的参数。注意：此access_token与基础支持的access_token不同。
-
-
-
-
 
     六、多媒体上传下载
 
         1、类简介：在网页中获取来访用户的数据。上传的多媒体文件有格式和大小限制，如下：
-
             * 图片（image）: 1M，支持JPG格式
-
             * 语音（voice）：2M，播放长度不超过60s，支持AMR\MP3格式
-
             * 视频（video）：10MB，支持MP4格式
-
             * 缩略图（thumb）：64KB，支持JPG格式
-
             * 媒体文件在后台保存时间为3天，即3天后media_id失效
 
         2、使用命名空间：use LaneWeChat\Core\Media;
 
         3、参数  $filename 上传的文件的绝对路径
-
                 $type 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
-
                 $mediaId = "通过上传多媒体文件，得到的id。";
-
                 $groupId = '分组ID';                         在添加新分组、获取分组列表的时候可以得到
 
         4、上传：上传后，微信服务器会返回一个mediaId。
-
             Media::upload($filename, $type);
 
         5、下载：根据mediaId下载一个多媒体文件。
-
             Media::download($mediaId);
-
-
 
     七、自定义菜单
 
@@ -545,11 +436,9 @@ Developer Blog：http://www.lanecn.com
         摘自微信官方网站：目前自定义菜单接口可实现两种类型按钮，如下：
 
             click：
-
                 用户点击click类型按钮后，微信服务器会通过消息接口推送消息类型为event的结构给开发者，并且带上按钮中开发者填写的key值，开发者可以通过自定义的key值与用户进行交互；
 
             view：
-
                 用户点击view类型按钮后，微信客户端将会打开开发者在按钮中填写的url值（即网页链接），达到打开网页的目的，建议与网页授权获取用户基本信息接口结合，获得用户的登入个人信息。
 
             总结一下哦，就是微信的菜单分两种，一种是view型，就是你设置一个网址，点了这个菜单之后就跳到你设置的网址去了。另一种就是click型，你设置一个key，然后用户点击的时候会通过本框架唯一入口wechat.php发送一个消息类型为event的请求，在wechatrequest.lib.php文件下的eventClick方法中可以使用。
@@ -574,52 +463,30 @@ Developer Blog：http://www.lanecn.com
 
             7、新增了以上6种菜单类型、view（点击跳转链接）的菜单类型的被动响应的支持。默认讲点击菜单的事件推送数据发送文本消息返回给用户。开发者请自行修改。
 
-
-
         2、使用命名空间：use LaneWeChat\Core\Menu;
 
         3、设置菜单：是所有的菜单数据全部发送一次，可不是每新增一个只发一个菜单。
-
             Menu::setMenu($menuList);
-
             $menuLis 是菜单列表，结构如下：
-
             $menuList ＝ array(
-
                 array('id'=>'1', 'pid'=>'0', 'name'=>'顶级分类一', 'type'=>'', 'code'=>''),
-
                 array('id'=>'2', 'pid'=>'1', 'name'=>'分类一子分类一', 'type'=>'click', 'code'=>'lane_wechat_menu_1_1'),
-
                 array('id'=>'3', 'pid'=>'1', 'name'=>'分类一子分类二', 'type'=>'1', 'code'=>'http://www.lanecn.com'),
-
                 array('id'=>'4', 'pid'=>'0', 'name'=>'顶级分类二', 'type'=>'1', 'code'=>'http://www.php.net/'),
-
                 array('id'=>'5', 'pid'=>'0', 'name'=>'顶级分类三', 'type'=>'2', 'code'=>'lane_wechat_menu_3'),
-
             );
-
             'id'是您的系统中对分类的唯一编号；
-
             'pid'是该分类的上级分类，顶级分类则填写0；
-
             'name'是分类名称；
-
             'type'是菜单类型，如果该分类下有子分类请务必留空；
-
                 'type'的值从以下类型中选择：click、view、scancode_push、scancode_waitmsg、pic_sysphoto、pic_photo_or_album、pic_weixin、location_select。
-
             'code'是view类型的URL或者其他类型的自定义key，如果该分类下有子分类请务必留空。
 
         4、获取微信菜单：获取到的是已经设置过的菜单列表，格式为Json，是微信服务器返回的原始数据。
-
             Menu::getMenu();
 
         5、删除微信菜单：将会删除设置过的所有菜单（一键清空）。
-
             Menu::delMenu();
-
-
-
 
     八、高级群发接口
 
@@ -630,83 +497,73 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\AdvancedBroadcast;
 
         3、上传图文消息。创建一个图文消息，保存到微信服务器，可以得到一个id代表这个图文消息，发送的时候根据这个id发送就可以了。
-
             Menu::uploadNews($articles);
-
             $articles 是图文消息列表，结构如下：
-
             $articles = array(
-
                 array('thumb_media_id'=>'多媒体ID，由多媒体上传接口获得' , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'是否设置为封面（0或者1）'),
-
                 array('thumb_media_id'=>'多媒体ID，由多媒体上传接口获得' , 'author'=>'作者', 'title'=>'标题', 'content_source_url'=>'www.lanecn.com', 'digest'=>'摘要', 'show_cover_pic'=>'是否设置为封面（0或者1）'),
-
-                                        );
-
+            );
             'thumb_media_id'多媒体ID，由多媒体上传接口获得：Media::upload($filename, $type);
-
             'author'作者
-
             'title'标题
-
             'content_source_url'一个URL，点击“阅读全文”跳转的地址
-
             'digest'摘要
-
             'show_cover_pic'0或1，是否设置为封面。
-
         下面的方法，图文消息的参数mediaId是由上面这个方法（3）Menu::uploadNews($articles);获得的，其他的mediaId是多媒体上传获得的Media::upload($filename, $type);
+        根据分组群发的所有接口最后一个参数,$isToAll，默认未false。使用true且成功群发，会使得此次群发进入历史消息列表。
 
         4、根据分组进行群发 - 发送图文消息：
-
-            AdvancedBroadcast::sentNewsByGroup($groupId, $mediaId);
+            AdvancedBroadcast::sentNewsByGroup($groupId, $mediaId, $isToAll=false);
 
         5、根据分组进行群发 - 发送文本消息
-
-            AdvancedBroadcast::sentTextByGroup($groupId, $content);
+            AdvancedBroadcast::sentTextByGroup($groupId, $content, $isToAll=false);
 
         6、根据分组进行群发 - 发送语音消息
-
-            AdvancedBroadcast::sentVoiceByGroup($groupId, $mediaId);
+            AdvancedBroadcast::sentVoiceByGroup($groupId, $mediaId, $isToAll=false);
 
         7、根据分组进行群发 - 发送图片消息
-
-            AdvancedBroadcast::sentImageByGroup($groupId, $mediaId);
+            AdvancedBroadcast::sentImageByGroup($groupId, $mediaId, $isToAll=false);
 
         8、根据分组进行群发 - 发送视频消息
-
-            AdvancedBroadcast::sentVideoByGroup($mediaId, $title, $description, $groupId);
+            AdvancedBroadcast::sentVideoByGroup($mediaId, $title, $description, $groupId, $isToAll=false);
 
         9、根据OpenID列表群发 - 发送图文消息
-
             AdvancedBroadcast::sentNewsByOpenId($toUserList, $mediaId);
 
         10、根据OpenID列表群发 - 发送文本消息
-
             AdvancedBroadcast::sentTextByOpenId($toUserList, $content);
 
         11、根据OpenID列表群发 - 发送语音消息
-
             AdvancedBroadcast::sentVoiceByOpenId($toUserList, $mediaId);
 
         12、根据OpenID列表群发 - 发送图片消息
-
             AdvancedBroadcast::sentImageByOpenId($toUserList, $mediaId);
 
         13、根据OpenID列表群发 - 发送视频消息
-
             AdvancedBroadcast::sentVideoByOpenId($toUserList, $mediaId, $title, $description);
 
         14、删除群发
-
             请注意，只有已经发送成功的消息才能删除删除消息只是将消息的图文详情页失效，已经收到的用户，还是能在其本地看到消息卡片。 另外，删除群发消息只能删除图文消息和视频消息，其他类型的消息一经发送，无法删除。
-
             AdvancedBroadcast::delete($msgId);
-
             $msgId:以上的群发接口成功时都会返回msg_id这个字段
 
+        15、预览图文消息
+            AdvancedBroadcast::previewNewsByGroup($openId, $mediaId);
 
+        16、预览文本消息
+            AdvancedBroadcast::previewTextByGroup($openId, $content);
 
+        17、预览语音消息
+            AdvancedBroadcast::previewVoiceByGroup($openId, $mediaId);
+
+        18、预览图片消息
+            AdvancedBroadcast::previewImageByGroup($openId, $mediaId);
+
+        19、预览视频消息
+            AdvancedBroadcast::previewVideoByGroup($mediaId, $title, $description, $openId);
+
+        20、查询群发消息发送状态【订阅号与服务号认证后均可用】
+            AdvancedBroadcast::getStatus($openId, $mediaId);
 
     九、多客服接口
 
@@ -715,25 +572,50 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\CustomService;
 
         3、获取客服聊天记录接口，有分页，一次获取一页，一页最多1000条。不能跨日。
-
             在需要时，开发者可以通过获取客服聊天记录接口，获取多客服的会话记录，包括客服和用户会话的所有消息记录和会话的创建、关闭等操作记录。利用此接口可以开发如“消息记录”、“工作监控”、“客服绩效考核”等功能。
-
             CustomService::getRecord($startTime, $endTime, $pageIndex=1, $pageSize=1000, $openId='')
-
             'startTime':查询开始时间，UNIX时间戳
-
             'startTime':查询结束时间，UNIX时间戳，每次查询不能跨日查询
 
         4、将用户发送的消息转发到客服：
-
             调用ResponsePassive::forwardToCustomService($fromusername, $tousername)。
-
             如用户在微信给公众号发送一条文本消息“iphone 6 多少钱？”，我们就可以在lanewechat/wechatrequest.lib.php文件中的方法text(&$request)中收到这条消息（如果不了解为什么会在这里收到文本消息，请重头再看文档）。
-
             然后在text(&$request)方法中，我们可以调用ResponsePassive::forwardToCustomService($request['fromusername'], $request['tousername'])。那么刚才用户发的“iphone 6 多少钱？”就会被转发到客服系统，在微信的客服客户端中就可以收到了。
 
+        5、添加客服帐号
+            必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+            开发者可以通过本接口为公众号添加客服账号，每个公众号最多添加10个客服账号。
+            CustomService::addAccount($kfAccount, $nickname, $password)
+                $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+                $nickname String 昵称
+                $password String 密码
 
+        6、修改客服帐号
+            必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+            CustomService::editAccount($kfAccount, $nickname, $password)
+                $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+                $nickname String 昵称
+                $password String 密码
 
+        7、删除客服帐号
+            必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+            CustomService::delAccount($kfAccount, $nickname, $password)
+                $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+                $nickname String 昵称
+                $password String 密码
+
+        8、获取所有客服账号
+            必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+            CustomService::getAccountList($kfAccount, $nickname, $password)
+                $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+                $nickname String 昵称
+                $password String 密码
+
+        9、设置客服帐号的头像
+            必须先在公众平台官网为公众号设置微信号后才能使用该能力。
+            CustomService::setAccountImage($kfAccount, $imagePath)
+                $kfAccount String 完整客服账号，格式为：账号前缀@公众号微信号
+                $imagePath String 待上传的头像文件路径
 
     十、智能接口
 
@@ -742,29 +624,16 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\IntelligentInterface;
 
         3、语义理解：比如输入文本串，如“查一下明天从北京到上海的南航机票”就可以收到关于这个问题的答案。
-
             单类别意图比较明确，识别的覆盖率比较大，所以如果只要使用特定某个类别，建议将category只设置为该类别。
-
             IntelligentInterface::semanticSemproxy($query, $category, $openId, $latitude='', $longitude='', $region='', $city=''){
-
             $query 输入文本串，如“查一下明天从北京到上海的南航机票"
-
             $category String 需要使用的服务类型，如“flight,hotel”，多个用“,”隔开，不能为空。详见《接口协议文档》
-
             $latitude Float 纬度坐标，与经度同时传入；与城市二选一传入。详见《接口协议文档》
-
             $longitude Float 经度坐标，与纬度同时传入；与城市二选一传入。详见《接口协议文档》
-
             $region String 区域名称，在城市存在的情况下可省；与经纬度二选一传入。详见《接口协议文档》
-
             $city 城市名称，如“北京”，与经纬度二选一传入
-
             $openId
-
             《接口协议文档》：http://mp.weixin.qq.com/wiki/images/1/1f/微信语义理解协议文档.zip
-
-
-
 
     十一、推广支持
 
@@ -773,43 +642,26 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\Popularize;
 
         3、生成带参数的二维码 - 第一步 创建二维码ticket
-
             获取带参数的二维码的过程包括两步，首先创建二维码ticket，然后凭借ticket到指定URL换取二维码。
-
             目前有2种类型的二维码，分别是临时二维码和永久二维码，
-
             前者有过期时间，最大为1800秒，但能够生成较多数量，后者无过期时间，数量较少（目前参数只支持1--100000）。
-
             两种二维码分别适用于帐号绑定、用户来源统计等场景。
-
             Popularize::createTicket($type, $expireSeconds, $sceneId);
-
             $type Int 临时二维码类型为1，永久二维码类型为2
-
             $expireSeconds Int 过期时间，只在类型为临时二维码时有效。最大为1800，单位秒
-
             $sceneId Int 场景值ID，临时二维码时为32位非0整型，永久二维码时最大值为100000（目前参数只支持1--100000）
 
         4、生成带参数的二维码 - 第二步 通过ticket换取二维码
-
             public static function getQrcode($ticket, $filename='');
-
             $ticket Popularize::createTicket()获得的
-
             $filename String 文件路径，如果不为空，则会创建一个图片文件，二维码文件为jpg格式，保存到指定的路径
-
             返回值：如果传递了第二个参数filename则会在filename指定的路径生成一个二维码的图片。如果第二个参数filename为空，则直接echo本函数的返回值，并在调用页面添加header('Content-type: image/jpg');，将会展示出一个二维码的图片。
 
         5、将一条长链接转成短链接。
 
            主要使用场景：开发者用于生成二维码的原链接（商品、支付二维码等）太长导致扫码速度和成功率下降，将原长链接通过此接口转成短链接再生成二维码将大大提升扫码速度和成功率。
-
            Popularize::long2short($longUrl);
-
            $longUrl String 需要转换的长链接，支持http://、https://、weixin://wxpay 格式的url
-
-
-
 
     十二、模板消息接口
 
@@ -819,7 +671,7 @@ Developer Blog：http://www.lanecn.com
             1、所有服务号都可以在功能->添加功能插件处看到申请模板消息功能的入口，但只有认证后的服务号才可以申请模板消息的使用权限并获得该权限；
             2、需要选择公众账号服务所处的2个行业，每月可更改1次所选行业；
             3、在所选择行业的模板库中选用已有的模板进行调用；
-            4、每个账号可以同时使用10个模板。
+            4、每个账号可以同时使用15个模板。
             5、当前每个模板的日调用上限为10000次。
 
         关于接口文档，请注意：
@@ -830,7 +682,6 @@ Developer Blog：http://www.lanecn.com
         2、使用命名空间：use LaneWeChat\Core\TemplateMessage;
 
         3、向用户推送模板消息
-
             TemplateMessage::sendTemplateMessage($data, $touser, $templateId, $url, $topcolor='#FF0000'){
                 $data = array(
                        'first'=>array('value'=>'您好，您已成功消费。', 'color'=>'#0A0A0A')
@@ -846,9 +697,33 @@ Developer Blog：http://www.lanecn.com
 
             注意：推送后用户到底是否成功接受，微信会向公众号推送一个消息。消息类型为事件消息，可以在lanewechat/wechatrequest.lib.php文件中的方法eventTemplateSendJobFinish(&$request)中收到这条消息。
 
+        4、设置行业
+            TemplateMessage::setIndustry($industryId1, $industryId2){
+                $industryId1 公众号模板消息所属行业编号 请打开连接查看行业编号 http://mp.weixin.qq.com/wiki/17/304c1885ea66dbedf7dc170d84999a9d.html#.E8.AE.BE.E7.BD.AE.E6.89.80.E5.B1.9E.E8.A1.8C.E4.B8.9A
+                $industryId2 公众号模板消息所属行业编号。在公众平台线上模板库中选用模板获得ID
 
+        5、获得模板ID
+            TemplateMessage::getTemplateId($templateIdShort)
+                $templateIdShort 模板库中模板的编号，有“TM**”和“OPENTMTM**”等形式
 
+    十三、安全性
 
+        1、类简介：安全性相关接口
+
+        2、使用命名空间：use LaneWeChat\Core\Auth;
+
+        3、获取微信服务器IP列表，用于验证每次的请求来源是否是微信服务器。
+            Auth::getWeChatIPList();
+
+    十四、自动回复
+
+            1、类简介：自动回复
+
+            2、使用命名空间：use LaneWeChat\Core\AutoReply;
+
+            3、获取自动回复规则
+                AutoReply::getRole($industryId1, $industryId2);
+                返回结果与字段说明请查看http://mp.weixin.qq.com/wiki/7/7b5789bb1262fb866d01b4b40b0efecb.html
 
 实例示范：
 

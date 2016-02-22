@@ -1,0 +1,20 @@
+{
+    "name": "lixuancn/lanewechat",
+    "type": "library",
+    "description": "LaneWeChat is WeChat development package for PHP,这是一个为快速开发微信应用而生的PHP框架。将微信的开发者功能根据文档进行了封装。为了快速开发的目的，开发者完全不需要要知道具体是如何实现的，只需要简单的调用方法即可",
+    "keywords": ["LaneWeChat","WeChat","PHP"],
+    "homepage": "http://lanewechat.lanecn.com",
+    "license": "DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE",
+    "versions": "1.5.3",
+    "authors": [
+        {
+            "name": "Lane/lixuancn",
+            "email": "lixuan868686@163.com",
+            "homepage": "http://www.lanecn.com",
+            "role": "PHP Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
