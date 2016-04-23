@@ -228,7 +228,7 @@ class WechatRequest{
      */
     public static function eventQrsceneSubscribe(&$request){
         /*
-        *对用户扫描的带参数二维码进行自动分组
+        *用户扫描带参数二维码进行自动分组
         *此处添加此代码是大多数需求是在扫描完带参数二维码之后对用户自动分组
         */
         $sceneid = str_replace("qrscene_","",$request['eventkey']);
