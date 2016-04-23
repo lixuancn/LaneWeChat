@@ -18,7 +18,7 @@
 
 更新日志：
     
-    2016-04-23 
+    2016-04-23 ---
 
         1、新增生成个性化菜单方法Menu::setPersonalMenuJson($menuListJson)
 
