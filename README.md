@@ -17,6 +17,18 @@
 文档地址：<a href="http://lanewechat.lanecn.com/">http://lanewechat.lanecn.com/</a>
 
 更新日志：
+    
+    2016-04-23 
+
+        1、新增生成个性化菜单方法Menu::setPersonalMenuJson($menuListJson)
+
+        2、新增生成默认菜单方法Menu::setMenuJson($menuListJson)，与原生成默认菜单函数Menu::setMenu($menuList)，此函数参数是json字符串
+        
+        3、改写AccessToken::getAccessToken()方法，使其可以兼容SAE平台，实际使用的时候需要屏蔽部分代码，开启另一部分代码。
+
+        4、新增AccessToken::_getToken()方法，目的是为兼容SAE平台
+
+        5、改写WechatRequest::eventQrsceneSubscribe方法，用户在扫描带参数二维码之后，可根据所带参数实现对用户自动分组的功能
 
     1、修复主动响应的BUG，感谢 晨露微凉<jokechat@qq.com> 反馈。
 
@@ -871,3 +883,7 @@
             $ticket = $ticket['ticket'];
             $qrcode = \LaneWeChat\Core\Popularize::getQrcode($ticket);
             echo $qrcode;
+    
+    七、补充
+
+        微信平台原来的客服软件近期将失效，所以部分功能可能受影响，对于腾讯是否会取消相关接口访问权限待定。
