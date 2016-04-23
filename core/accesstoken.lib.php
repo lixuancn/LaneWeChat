@@ -15,13 +15,52 @@ class AccessToken{
      * 获取微信Access_Token
      */
     public static function getAccessToken(){
+        //下面的代码段是原框架的代码段,SAE平台不支持本地write功能,所以要想达到缓存access_token的目的需要用到memcache(缓存)服务
+        //兼容SAE平台需开启下面注释掉的一段代码
         //检测本地是否已经拥有access_token，并且检测access_token是否过期
         $accessToken = self::_checkAccessToken();
         if($accessToken === false){
             $accessToken = self::_getAccessToken();
         }
         return $accessToken['access_token'];
+        /*
+        //下面的代码是在SAE平台上获取access_token的过程
+        //初始化memcache,前提是已经开启memcache服务
+        $mmc=memcache_init();
+        //从memcache之中取值
+        $token=memcache_get($mmc,'key');
+        //看memcache之中是否的值是否过期/存在,true直接返回 
+        if(!empty($token)){
+            return $token;
+        }else{
+            //如果memcache中的值已经过期/不存在,再次请求获取
+            $token=self::_getToken();
+            //将access_token的值存入memcache并且设置其过期时间2000秒,微信平台默认是7200秒,此处设置的值比7200小就可以
+            $val=memcache_set($mmc,'key',$token,0,7000);
+            return $token;
+        }
+        */
     }
+    /**
+    *@descrpition 从微信服务器获取微信ACCESS_TOKEN
+    * @return string
+    */
+    public static function _getToken(){
+        //使用CURL来向指定的TECENT 服务器的API接口发送指定信息啊
+        $ch=curl_init();
+        $url='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
+        //针对这样一个url请求,所对应的链接是这样的一个地址.
+        curl_setopt($ch, CURLOPT_URL, $url);
+        //将请球的结果在exec的时候赋值给参数,而不是直接输出来的
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //curl中的header头对用户是不可以见到的
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $output=curl_exec($ch);
+        curl_close($ch);
+        $obj=json_decode($output,true);    
+        return $obj['access_token'];
+}
 
     /**
      * @descrpition 从微信服务器获取微信ACCESS_TOKEN
