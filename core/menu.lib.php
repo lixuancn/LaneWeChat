@@ -216,7 +216,7 @@ class Menu{
                 }
               }
      *除了匹配规则之中的参数,其余各参数的说明同setMenu($menuList)方法
-     *对于匹配规则,只有符合匹配条件的用户才会有上述定制的个性化菜单
+     *关于匹配,只有符合匹配条件的用户才会有上述定制的个性化菜单
      * @return bool
      */
     public static function setPersonalMenuJson($menuListJson){
