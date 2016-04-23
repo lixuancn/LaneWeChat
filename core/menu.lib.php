@@ -161,6 +161,7 @@ class Menu{
 
      * @return bool
      */
+    
     public static function setMenuJson($menuListJson){
         //json格式
         $data=$menuListJson;
