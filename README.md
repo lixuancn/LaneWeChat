@@ -18,17 +18,24 @@
 
 更新日志：
     
-    2016-04-23 ---
+    2016-04-25 ---
 
         1、新增生成个性化菜单方法Menu::setPersonalMenuJson($menuListJson)
 
         2、新增生成默认菜单方法Menu::setMenuJson($menuListJson)，与原生成默认菜单函数Menu::setMenu($menuList)，此函数参数是json字符串
         
-        3、改写AccessToken::getAccessToken()方法，使其可以兼容SAE平台，实际使用的时候需要屏蔽部分代码，开启另一部分代码。
+        3、改写AccessToken::get()方法，区分是否是SAE平台,然后执行不同的方法。
 
-        4、新增AccessToken::_getToken()方法，目的是为兼容SAE平台
+        4、新增AccessToken::_getSae()方法，在SAE平台上根据条件的不同,选择从memcache/文件/数据库中读取access_token.
 
-        5、改写WechatRequest::eventQrsceneSubscribe方法，用户在扫描带参数二维码之后，可根据所带参数实现对用户自动分组的功能
+        5、新增AccessToken::_getFromMemcache()方法，在SAE平台上从memcache中读取access_token。
+
+        6、新增AccessToken::_getFromFile()方法，从文件中读取access_token。
+            1) 在获取access_token的过程中需要调用私有方法_existsToken(),_expriseToken(),_getToken
+            2) 此方法在其他平台上的可写目录中可以正常执行,因为SAE平台不支持本地创建/写文件,可通过改写此方法在SAE的storage中创建/读/写文件,
+            个人感觉任何缓存、中间临时交换数据的需求都是不适合使用Storage和KVDB存储的,所以没有添加相关的方法实现(有什么理解不对的请指出)。
+
+        7、改写WechatRequest::eventQrsceneSubscribe方法，用户在扫描带参数二维码之后，可根据所带参数实现对用户自动分组的功能
 
     1、修复主动响应的BUG，感谢 晨露微凉<jokechat@qq.com> 反馈。
 
