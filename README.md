@@ -24,7 +24,7 @@
 
         2、新增生成默认菜单方法Menu::setMenuJson($menuListJson)，与原生成默认菜单函数Menu::setMenu($menuList)，此函数参数是json字符串
         
-        3、改写AccessToken::get()方法，区分是否是SAE平台,然后执行不同的方法。
+        3、新增AccessToken::get()方法，区分是否是SAE平台,然后执行不同的方法。
 
         4、新增AccessToken::_getSae()方法，在SAE平台上根据条件的不同,选择从memcache/文件/数据库中读取access_token.
 
