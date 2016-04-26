@@ -15,6 +15,9 @@ class AccessToken{
      * 获取微信Access_Token
      */
     public static function getAccessToken(){
+        //在获取token的过程中先判断环境
+        if(Environment::isSae($_SERVER['HTTP_APPNAME'],$_SERVER['HTTP_ACCESSKEY']))
+            return self::_getSae();
         //检测本地是否已经拥有access_token，并且检测access_token是否过期
         $accessToken = self::_checkAccessToken();
         if($accessToken === false){
@@ -67,21 +70,6 @@ class AccessToken{
     }
 
     /**
-    *@descrpition 根据平台信息采用不同方法
-    * @return string
-    */
-    private static function get(){
-        //判断是否符合所填写的SAE平台的相关配置信息
-        if(!strcmp($_SERVER['HTTP_ACCESSKEY'],HTTP_ACCESSKEY)&&!strcmp($_SERVER['HTTP_APPNAME'],HTTP_APPNAME)){
-            $accessToken = self::_getSae();
-        }else{
-            //不是SAE平台的话通过原有方法
-            $accessToken = self::getAccessToken();
-        }
-        return $accessToken;
-    }
-
-    /**
     *@descrpition 在SAE平台上获取access_token
     * @return string
     */
@@ -99,16 +87,20 @@ class AccessToken{
         //初始化memcache,前提是已经开启memcache服务
         $mmc=memcache_init();
         //从memcache之中取值
-        $token=memcache_get($mmc,'key');
+        $accessToken = memcache_get($mmc,'key');
         //看memcache之中是否的值是否过期/存在,true直接返回 
-        if(!empty($token)){
-            return $token;
+        if(!empty($accessToken)){
+            return $accessToken;
         }else{
             //如果memcache中的值已经过期/不存在,再次请求获取
-            $token=self::_getToken();
+            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
+            $accessToken = Curl::callWebServer($url, '', 'GET');
+            if(!isset($accessToken['access_token'])){
+                return Msg::returnErrMsg(MsgConstant::ERROR_GET_ACCESS_TOKEN, '获取ACCESS_TOKEN失败');
+            }
             //将access_token的值存入memcache并且设置其过期时间2000秒,微信平台默认是7200秒,此处设置的值比7200小就可以
-            $val=memcache_set($mmc,'key',$token,0,7000);
-            return $token;
+            $val=memcache_set($mmc,'key',$accessToken['access_token'],0,7000);
+            return $accessToken['access_token'];
         }
     }
 
@@ -120,17 +112,25 @@ class AccessToken{
         if(self::_existsToken()){
             if(self::_expriseToken()){
                 //重新获取一次access_token，并且将文件删除，重新向文件里面写一次
-                $accessToken = self::_getToken();
+                $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
+                $accessToken = Curl::callWebServer($url, '', 'GET');
+                if(!isset($accessToken['access_token'])){
+                    return Msg::returnErrMsg(MsgConstant::ERROR_GET_ACCESS_TOKEN, '获取ACCESS_TOKEN失败');
+                }
                 unlink('token.txt');
-                file_put_contents('token.txt', $accessToken);
+                file_put_contents('token.txt', $accessToken['access_token']);
             }else{
                 $accessToken = file_get_contents('token.txt');
             }
         }else{
-            $accessToken = self::_getToken();
-            file_put_contents('token.txt', $accessToken);
+            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
+            $accessToken = Curl::callWebServer($url, '', 'GET');
+            if(!isset($accessToken['access_token'])){
+                return Msg::returnErrMsg(MsgConstant::ERROR_GET_ACCESS_TOKEN, '获取ACCESS_TOKEN失败');
+            }
+            file_put_contents('token.txt', $accessToken['access_token']);
         }
-        return $accessToken;
+        return $accessToken['access_token'];;
     }
 
     /**
@@ -157,27 +157,6 @@ class AccessToken{
         }else{
             return false;
         }
-    }
-
-    /**
-    *@descrpition 从微信服务器获取微信ACCESS_TOKEN
-    * @return string
-    */
-    private static function _getToken(){
-        //使用CURL来向指定的TECENT 服务器的API接口发送指定信息啊
-        $ch = curl_init();
-        $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
-        //针对这样一个url请求,所对应的链接是这样的一个地址.
-        curl_setopt($ch, CURLOPT_URL, $url);
-        //将请球的结果在exec的时候赋值给参数,而不是直接输出来的
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        //curl中的header头对用户是不可以见到的
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        $output = curl_exec($ch);
-        curl_close($ch);
-        $obj = json_decode($output,true);    
-        return $obj['access_token'];
     }
 }
 ?>
