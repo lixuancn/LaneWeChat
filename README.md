@@ -24,7 +24,7 @@
 
         2、新增生成默认菜单方法Menu::setMenuJson($menuListJson)，与原生成默认菜单函数Menu::setMenu($menuList)，此函数参数是json字符串
         
-        3、新增Environment类，isSae($appname,$accesskey)方法判断所在环境是否是SAE平台。
+        3、新增Environment类, isSae($appname,$accesskey)方法判断所在环境是否是SAE平台。
 
         4、外部类调用的入口，一定是getAccessToken()，所以进入此方法后调用Environment::isSae($appname,$accesskey)判断平台属性，若不是SAE，逻辑不变原用户不受影响，否则根据SAE环境执行不同的获取token的方法。
 
