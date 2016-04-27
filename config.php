@@ -16,16 +16,21 @@ define('LANEWECHAT_VERSION_DATE', '2014-11-05');
 /*
  * 服务器配置，详情请参考@link http://mp.weixin.qq.com/wiki/index.php?title=接入指南
  */
-define("WECHAT_URL", 'http://www.lanecn.com');
+define("WECHAT_URL", 'http://1.latinwechat.applinzi.com/wechat.php');
 define('WECHAT_TOKEN', 'weixin');
 define('ENCODING_AES_KEY', "MqAuKoex6FyT5No0OcpRyCicThGs0P1vz4mJ2gwvvkF");
 
 /*
  * 开发者配置
  */
-define("WECHAT_APPID", 'wx5d57f64bb4804d90');
-define("WECHAT_APPSECRET", '4b1fa6d9442351ec9268eff05e38f521');
+define("WECHAT_APPID", 'wxc21178adf9ed8264');
+define("WECHAT_APPSECRET", '9ebe26b87e74f4449c1922b30abb544c');
 
+/*
+ * SAE平台配置
+ */
+define("HTTP_ACCESSKEY", '04xmzo3zm5');
+define("HTTP_APPNAME", 'imcustom4test');
 
 ////-----引入系统所需类库-------------------
 ////引入错误消息类

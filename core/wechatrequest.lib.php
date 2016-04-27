@@ -207,7 +207,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventSubscribe(&$request){
-        $content = '欢迎您关注我们的微信，将为您竭诚服务';
+        $content = '欢迎您关注我们的微信，将为您竭诚服务.';
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -227,7 +227,19 @@ class WechatRequest{
      * @return array
      */
     public static function eventQrsceneSubscribe(&$request){
-        $content = '欢迎您关注我们的微信，将为您竭诚服务';
+        /*
+        *用户扫描带参数二维码进行自动分组
+        *此处添加此代码是大多数需求是在扫描完带参数二维码之后对用户自动分组
+        */
+        $sceneid = str_replace("qrscene_","",$request['eventkey']);
+        //移动用户到相应分组中去,此处的$sceneid依赖于之前创建时带的参数
+        if(!empty($sceneid)){
+            UserManage::editUserGroup($request['fromusername'], $sceneid);
+            $result=UserManage::getGroupByOpenId($request['fromusername']);
+            //方便开发人员调试时查看参数正确性
+            $content = '欢迎您关注我们的微信，将为您竭诚服务。二维码Id:'.$result['groupid'];
+        }else
+            $content = '欢迎您关注我们的微信，将为您竭诚服务。';
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 
@@ -257,7 +269,7 @@ class WechatRequest{
      * @return array
      */
     public static function eventClick(&$request){
-		//获取该分类的信息
+        //获取该分类的信息
         $eventKey = $request['eventkey'];
         $content = '收到点击菜单事件，您设置的key是' . $eventKey;
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);

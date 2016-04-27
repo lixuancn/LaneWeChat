@@ -126,4 +126,113 @@ class Menu{
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$accessToken;
         return Curl::callWebServer($url, '', 'GET');
     }
+
+    /**
+     * 添加菜单，一级菜单最多3个，每个一级菜单最多可以有5个二级菜单
+     * @param $menuListJson
+     *        {
+                "button":[
+                {  
+                    "type":"click",
+                    "name":"今日歌曲",
+                    "key":"V1001_TODAY_MUSIC"
+                },
+                {
+                    "name":"菜单",
+                    "sub_button":[
+                    {    
+                        "type":"view",
+                        "name":"搜索",
+                        "url":"http://www.soso.com/"
+                    },
+                    {
+                        "type":"view",
+                        "name":"视频",
+                        "url":"http://v.qq.com/"
+                    },
+                    {
+                        "type":"click",
+                        "name":"赞一下我们",
+                        "key":"V1001_GOOD"
+                    }]
+                }]
+               }
+     *各参数的说明同setMenu($menuList)方法
+
+     * @return bool
+     */
+    
+    public static function setMenuJson($menuListJson){
+        //json格式
+        $data=$menuListJson;
+        //此处获得token所调用的函数内部有改写,此处是可在SAE平台上运行的,实际应用过程中可
+        //根据运行平台的不同改写getAccessToken()函数
+        $accessToken = AccessToken::getAccessToken();
+        //创建默认菜单的请求地址
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$accessToken;
+        $result = Curl::callWebServer($url, $data, 'POST');
+        if($result['errcode'] == 0){
+            return true;
+        }
+        return $result;
+    }
+
+    /**
+     * 添加个性化菜单，一级菜单最多3个，每个一级菜单最多可以有5个二级菜单
+     * @param $menuListJson
+     *        {
+                "button":[
+                {   
+                    "type":"click",
+                    "name":"今日歌曲",
+                    "key":"V1001_TODAY_MUSIC" 
+                },
+                { 
+                    "name":"菜单",
+                    "sub_button":[
+                    {   
+                        "type":"view",
+                        "name":"搜索",
+                        "url":"http://www.soso.com/"
+                    },
+                    {
+                        "type":"view",
+                        "name":"视频",
+                        "url":"http://v.qq.com/"
+                    },
+                    {
+                        "type":"click",
+                        "name":"赞一下我们",
+                        "key":"V1001_GOOD"
+                    }]
+                }],
+                "matchrule":{
+                "group_id":"2",
+                "sex":"1",
+                "country":"中国",
+                "province":"广东",
+                "city":"广州",
+                "client_platform_type":"2"
+                "language":"zh_CN"
+                }
+              }
+     *除了匹配规则之中的参数,其余各参数的说明同setMenu($menuList)方法
+     *关于匹配,只有符合匹配条件的用户才会有上述定制的个性化菜单
+     * @return bool
+     */
+    public static function setPersonalMenuJson($menuListJson){
+        //json格式
+        $data=$menuListJson;
+        //此处获得token所调用的函数内部有改写,此处是可在SAE平台上运行的,实际应用过程中可
+        //根据运行平台的不同改写getAccessToken()函数
+        $accessToken = AccessToken::getAccessToken();
+        //请求地址与创建普通菜单有区别
+        //创建个性化菜单之前必须先创建默认菜单
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=".$accessToken;
+        $result = Curl::callWebServer($url, $data, 'POST');
+        if($result['errcode'] == 0){
+            return true;
+        }
+        return $result;
+    }
 }
