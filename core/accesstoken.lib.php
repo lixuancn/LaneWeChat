@@ -85,22 +85,26 @@ class AccessToken{
     */
     private static function _getFromMemcache(){
         //初始化memcache,前提是已经开启memcache服务
-        $mmc=memcache_init();
-        //从memcache之中取值
-        $accessToken = memcache_get($mmc,'key');
-        //看memcache之中是否的值是否过期/存在,true直接返回 
-        if(!empty($accessToken)){
-            return $accessToken;
-        }else{
-            //如果memcache中的值已经过期/不存在,再次请求获取
-            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
-            $accessToken = Curl::callWebServer($url, '', 'GET');
-            if(!isset($accessToken['access_token'])){
-                return Msg::returnErrMsg(MsgConstant::ERROR_GET_ACCESS_TOKEN, '获取ACCESS_TOKEN失败');
+        if(function_exists('memcache_init') && function_exists('memcache_get') && function_exists('memcache_set')){
+            $mmc=memcache_init();
+            //从memcache之中取值
+            $accessToken = memcache_get($mmc,'key');
+            //看memcache之中是否的值是否过期/存在,true直接返回
+            if(!empty($accessToken)){
+                return $accessToken;
+            }else{
+                //如果memcache中的值已经过期/不存在,再次请求获取
+                $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APPID.'&secret='.WECHAT_APPSECRET;
+                $accessToken = Curl::callWebServer($url, '', 'GET');
+                if(!isset($accessToken['access_token'])){
+                    return Msg::returnErrMsg(MsgConstant::ERROR_GET_ACCESS_TOKEN, '获取ACCESS_TOKEN失败');
+                }
+                //将access_token的值存入memcache并且设置其过期时间2000秒,微信平台默认是7200秒,此处设置的值比7200小就可以
+                $val=memcache_set($mmc,'key',$accessToken['access_token'],0,7000);
+                return $accessToken['access_token'];
             }
-            //将access_token的值存入memcache并且设置其过期时间2000秒,微信平台默认是7200秒,此处设置的值比7200小就可以
-            $val=memcache_set($mmc,'key',$accessToken['access_token'],0,7000);
-            return $accessToken['access_token'];
+        }else{
+            exit('SAE环境下不支持写文件.并且您尚未开启memcache.请在lanewechat/core/accesstoken.lib.php的getAccessToken()方法为入口自行编写存取access_token的方式');
         }
     }
 
