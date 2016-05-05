@@ -16,7 +16,7 @@ define('LANEWECHAT_VERSION_DATE', '2014-11-05');
 /*
  * 服务器配置，详情请参考@link http://mp.weixin.qq.com/wiki/index.php?title=接入指南
  */
-define("WECHAT_URL", 'http://1.latinwechat.applinzi.com/wechat.php');
+define("WECHAT_URL", 'http://lanewechat.lanecn.com/');
 define('WECHAT_TOKEN', 'weixin');
 define('ENCODING_AES_KEY', "MqAuKoex6FyT5No0OcpRyCicThGs0P1vz4mJ2gwvvkF");
 
