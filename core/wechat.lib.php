@@ -36,7 +36,7 @@ class Wechat{
         //是否打印错误报告
         $this->debug = $debug;
         //接受并解析微信中心POST发送XML数据
-        $xml = (array) simplexml_load_string($GLOBALS['HTTP_RAW_POST_DATA'], 'SimpleXMLElement', LIBXML_NOCDATA);
+        $xml = (array) simplexml_load_string(file_get_contents('php://input'), 'SimpleXMLElement', LIBXML_NOCDATA);
 
         //将数组键名转换为小写
         $this->request = array_change_key_case($xml, CASE_LOWER);

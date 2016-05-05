@@ -17,8 +17,12 @@
 文档地址：<a href="http://lanewechat.lanecn.com/">http://lanewechat.lanecn.com/</a>
 
 更新日志：
-    
-    2016-04-26 ---
+
+    2016-05-05 1.5.4
+
+        1、接收数据方式由HTTP_RAW_POST_DATA替换为php://input. HTTP_RAW_POST_DATA在PHP5.6以后就不再推荐使用.
+
+    2016-04-26 1.5.4
 
         1、新增生成个性化菜单方法Menu::setPersonalMenuJson($menuListJson)
 
