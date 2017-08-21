@@ -16,7 +16,7 @@ class AccessToken{
      */
     public static function getAccessToken(){
         //在获取token的过程中先判断环境
-        if(Environment::isSae($_SERVER['HTTP_APPNAME'],$_SERVER['HTTP_ACCESSKEY']))
+        if(isset($_SERVER['HTTP_APPNAME']) && isset($_SERVER['HTTP_ACCESSKEY']) && Environment::isSae($_SERVER['HTTP_APPNAME'], $_SERVER['HTTP_ACCESSKEY']))
             return self::_getSae();
         //检测本地是否已经拥有access_token，并且检测access_token是否过期
         $accessToken = self::_checkAccessToken();
