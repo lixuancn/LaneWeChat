@@ -317,7 +317,7 @@
 
         1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
 
-        2、使用命名空间：use LaneWeChat\Core\ResponsePassive;
+        2、使用命名空间：use LaneWeChat\Core\ResponseInitiative;
 
         3、参数  $tousername = "你的公众号Id";  在变量$require['tousername']中
                 $mediaId = "通过上传多媒体文件，得到的id。";
