@@ -315,7 +315,7 @@
 
     三、主动给用户发送消息。
 
-        1、类简介：用户输入文本、图片、语音、音乐、视频等消息，以及关注、取消关注，上报地理位置等事件后，服务器被动给出应答。
+        1、类简介：主动向用户推送文本、图片、语音、音乐、视频等消息。
 
         2、使用命名空间：use LaneWeChat\Core\ResponseInitiative;
 
@@ -334,8 +334,8 @@
         7、发送视频
             ResponseInitiative::video($tousername, $mediaId, '视频描述', '视频标题');
 
-        8、发送地理位置
-            ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
+        8、发送音乐
+            ResponseInitiative::music($tousername, '音乐标题', '音乐描述', '音乐链接', '高质量音乐链接，WIFI环境优先使用该链接播放音乐', '缩略图的媒体id，通过上传多媒体文件，得到的id');
 
         9、发送图文消息
             1）创建图文消息内容
