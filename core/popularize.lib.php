@@ -73,6 +73,7 @@ class Popularize{
         $template = array();
         $template['long_url'] = $longUrl;
         $template['action'] = 'long2short';
-        return Curl::callWebServer($queryUrl, '', $queryAction);
+        $template = json_encode($template);
+        return Curl::callWebServer($queryUrl, $template, $queryAction);
     }
 }
