@@ -33,7 +33,7 @@ class ResponseInitiative{
                 'content'=>$content,
             ),
         );
-        $template = json_encode($template);
+        $template = json_encode($template, JSON_UNESCAPED_UNICODE);
 
         return Curl::callWebServer(self::$queryUrl.$accessToken, $template, self::$action);
     }
